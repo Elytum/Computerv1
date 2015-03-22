@@ -4,6 +4,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void		ft_putnbr(int n)
+{
+	char	buff[2];
+
+	if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+		buff[0] = n % 10;
+		write(1, buff, 1);
+	}
+	else
+	{
+		buff[0] = n + '0';
+		write(1, buff, 1);
+	}
+}
+
 void		ft_putstrarray(char **str)
 {
 	size_t	i;
@@ -67,52 +84,6 @@ static char		*ft_strsub(char const *s, unsigned int start, size_t len)
 		return (new);
 	}
 	return (NULL);
-}
-
-static size_t	ft_nbr_words2(char const *s, char c1, char c2)
-{
-	int			i;
-	int			nbr;
-
-	i = 0;
-	nbr = 0;
-	while (s[i])
-	{
-		while (s[i] && (s[i] == c1 || s[i] == c2))
-			i++;
-		while (s[i] && (s[i] != c1 && s[i] != c2))
-			i++;
-		if (s[i] != '\0' || (s[i - 1] != c1 && s[i - 1] != c2))
-			nbr++;
-	}
-	return (nbr);
-}
-
-char			**ft_str2plit(char const *s, char c1, char c2)
-{
-	char		**str;
-	size_t		i;
-	size_t		j;
-	size_t		len;
-
-	i = 0;
-	if (s == NULL)
-		return (NULL);
-	len = ft_nbr_words2(s, c1, c2);
-	str = (char **)malloc(sizeof(char *) * len + 1);
-	while (i < len)
-	{
-		j = 0;
-		while (*s && (*s == c1 || *s == c2))
-			s = s + 1;
-		while (*(s + j) && (*(s + j) != c1 && *(s + j) != c2))
-			j++;
-		*(str++) = ft_strsub(s, 0, j);
-		s = s + j;
-		i++;
-	}
-	*str = NULL;
-	return (str - len);
 }
 
 static size_t	ft_nbr_words(char const *s, char c)
@@ -201,14 +172,11 @@ void	ft_simplify(char **ptr)
 {
 	char	*p;
 
-	p = *ptr;
-	if (!*p)
+	if (!*(p = *ptr))
 		return ;
 	while (*(p + 1))
 	{
-		if (*p == '+' && *(p + 1) == '+')
-			*p = ' ';
-		else if (*p == '+' && *(p + 1) == '-')
+		if (*p == '+' && (*(p + 1) == '+' || *(p + 1) == '-'))
 			*p = ' ';
 		else if (*p == '-' && *(p + 1) == '+')
 		{
@@ -219,6 +187,11 @@ void	ft_simplify(char **ptr)
 		{
 			*p = ' ';
 			*(p + 1) = '+';
+		}
+		else if (*p == '^' && *(p + 1) == '+')
+		{
+			*p = ' ';
+			*(p + 1) = '^';
 		}
 		p++;
 	}
@@ -233,7 +206,10 @@ char	*ft_simplified(char *str)
 	ft_simplify(&tmp);
 	ret = ft_getreduced(tmp);
 	free(tmp);
-	return (ret);
+	ft_simplify(&ret);
+	tmp = ft_getreduced(ret);
+	free(ret);
+	return (tmp);
 }
 
 int		ft_equalserror(char *str)
@@ -261,7 +237,6 @@ int		ft_equalserror(char *str)
 	}	
 	write(1, "\e[0m\n\n", 5);
 	return (0);
-	(void)str;
 }
 
 int		ft_getexpressions(t_env *e, char *line)
@@ -297,7 +272,7 @@ int		ft_invalidcharacters(char *str)
 	char *ptr;
 
 	ptr = str;
-	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid character :\e[0m\n", 49);
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid character(s) :\e[0m\n", 52);
 	write(1, str, strlen(str));
 	write(1, "\n\e[1;31m", 8);
 	while (*ptr)
@@ -335,7 +310,7 @@ int		ft_checkcharacters(char *str)
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^')
 				ptr++;
-			else
+			else if (*ptr != 'X')
 				return (0);
 		}
 		ptr++;
@@ -426,7 +401,7 @@ int		ft_invalidepowers(char *str)
 {
 	char *ptr;
 
-	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid sign :\e[0m\n", 44);
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power sign :\e[0m\n", 50);
 	write(1, str, strlen(str));
 	write(1, "\n\e[1;31m", 8);
 	ptr = str;
@@ -450,7 +425,7 @@ int		ft_invalidepowers(char *str)
 	return (0);
 }
 
-int		ft_positive_powers(char *str)
+int		ft_checkpowerssign(char *str)
 {
 	char	*ptr;
 
@@ -465,21 +440,129 @@ int		ft_positive_powers(char *str)
 	return (1);
 }
 
+int		ft_checkval(char *str)
+{
+	unsigned int	value;
+	unsigned int	max;
+	char			*ptr;
+
+	ptr = str;
+	value = 0;
+	max = (ft_nextsign(ptr) == '+') ? MAX_INT : MIN_INT;
+	// dprintf(1, "Testing '%s'\nMax = %u\n", str, max);
+	while (*ptr == '+' || *ptr == '-' ||
+		*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+		ptr++;
+	// dprintf(1, "Cut '%s'\n", ptr);
+	while ((*ptr >= '0' && *ptr <= '9') ||
+		*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+	{
+		if (*ptr >= '0' && *ptr <= '9')
+		{
+			if (((value = value * 10 + *ptr - '0') > max))
+			{
+				// dprintf(1, "Return 0 with %u\n\n", value);
+				return (0);
+			}
+		}
+		ptr++;
+	}
+	// dprintf(1, "Return 1 with %u\n\n", value);
+	return (1);
+}
+
+int		ft_checkextremval(char *str)
+{
+	char *ptr;
+
+	ptr = str;
+	while (*ptr)
+	{
+		if ((*ptr >= '0' && *ptr <= '9') || *ptr == '+' || *ptr == '-')
+		{
+			if (!ft_checkval(ptr))
+				return (0);
+			while (*ptr == '+' || *ptr == '-' ||
+				*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+				ptr++;
+			while ((*ptr >= '0' && *ptr <= '9') ||
+				*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+				ptr++;
+		}
+		else
+			ptr++;
+	}
+	return (1);
+}
+
+int		ft_invalideextrem(char *str)
+{
+	char	*ptr;
+	char	c;
+
+	ptr = str;
+	write(1, "\e[1;35mwarning: \e[0m\e[1;29mint limits overreached :\e[0m\n", 56);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;35m", 8);
+	while (*ptr)
+	{
+		if ((*ptr >= '0' && *ptr <= '9') || *ptr == '+' || *ptr == '-')
+		{
+			c = (ft_checkval(ptr)) ? ' ' : '~';
+			while (*ptr == '-' || *ptr == '+' ||
+				*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+				write(1, &c, (ptr++ > 0));
+			while ((*ptr >= '0' && *ptr <= '9') ||
+				*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+				write(1, &c, (ptr++ > 0));
+		}
+		else
+			write(1, " ", (ptr++ > 0));
+	}
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
+int		ft_error(char n)
+{
+	if (n == 1)
+		write(1, "\e[1;31mOne error detected, can't process without correction\e[0m\n", 64);
+	else
+	{
+		write(1, "\e[1;31m", 7);
+		ft_putnbr(n);
+		write(1, " errors detected, can't process without correction\e[0m\n", 57);
+	}
+	return (0);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
+	char	error;
+	char	warning;
 
+	error = 0;
+	warning = 0;
 	if (ac != 2)
 		return (0);
 	if (!(ft_checkcharacters(*(av + 1))))
-		return (ft_invalidcharacters(*(av + 1)));
-	if (!(ft_positive_powers(*(av + 1))))
-		return (ft_invalidepowers(*(av + 1)));
-	if (!(ft_getexpressions(&e, *(av + 1))))
-		return (0);
-	if (!(ft_checkexpressions(e)))
-		return (ft_invalidexpressions(e));
+		error += 1 + ft_invalidcharacters(*(av + 1));
+	if (!(ft_checkpowerssign(*(av + 1))))
+		error += 1 + ft_invalidepowers(*(av + 1));
+	if (!(ft_checkextremval(*(av + 1))))
+		warning += 1 + ft_invalideextrem(*(av + 1));
+	// if (!(ft_closed(*(av + 1))))
+		// warning += 1;
+		// error += 1 + ft_invalidepowers(*(av + 1));
+	if (error)
+		return (ft_error(error));
+// if (!(ft_getexpressions(&e, *(av + 1))))
+// return (0);
+// if (!(ft_checkexpressions(e)))
+// return (ft_invalidexpressions(e));
 	// if (!(ft_decompose(&e)))
 		// return (0);	return (0);
 	(void)av;
+	(void)e;
 }
