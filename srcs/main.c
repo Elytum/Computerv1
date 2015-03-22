@@ -236,16 +236,41 @@ char	*ft_simplified(char *str)
 	return (ret);
 }
 
+int		ft_equalserror(char *str)
+{
+	char *ptr;
+
+	if (!strchr(str, '='))
+	{
+		write(1, "\e[1;31merror: \e[0m\e[1;29mno equality :\e[0m\n", 43);
+		write(1, str, strlen(str));
+		write(1, "\n", 1);
+		return (0);
+	}
+	write(1, "\e[1;31merror: \e[0m\e[1;29mtoo many equalities :\e[0m\n", 51);
+	write(1, str, strlen(str));
+	ptr = str;
+	write(1, "\n\e[1;31m", 8);
+	while (*ptr)
+	{
+		if (*ptr == '=')
+			write(1, "~", 1);
+		else
+			write(1, " ", 1);
+		ptr++;
+	}	
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+	(void)str;
+}
+
 int		ft_getexpressions(t_env *e, char *line)
 {
 	char	*cptr;
 	char	*tmp;
 
 	if (!(cptr = strchr(line, '=')) || strchr(cptr + 1, '='))
-	{
-		dprintf(1, "ERROR 2\n");
-		return (0);
-	}
+		return (ft_equalserror(line));
 	*cptr++ = '\0';
 	if (!(e->e1.str = (char *)malloc(sizeof(char) * strlen(line) + 2)))
 		return (0);
