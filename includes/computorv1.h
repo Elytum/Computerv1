@@ -14,6 +14,7 @@ typedef struct		s_expr
 
 typedef struct		s_env
 {
+	char			*tmp;
 	char			*minimized;
 	t_expr			e1;
 	t_expr			e2;

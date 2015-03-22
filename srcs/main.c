@@ -318,6 +318,128 @@ int		ft_checkcharacters(char *str)
 	return (1);
 }
 
+int		ft_invalidexpressions(t_env e)
+{
+	// char *ptr;
+
+	// ptr = str;
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid expression :\e[0m\n", 50);
+	// write(1, str, strlen(str));
+	// write(1, "\n\e[1;31m", 8);
+	// while (*ptr)
+	// {
+	// 	if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
+	// 		!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
+	// 		*ptr != '-' && *ptr != '*' && *ptr != '=')
+	// 	{
+	// 		if (*ptr == 'X' && *(ptr + 1) == '^')
+	// 		{
+	// 			write (1, "  ", 2);
+	// 			ptr++;
+	// 		}
+	// 		else
+	// 			write(1, "~", 1);
+	// 	}
+	// 	else
+	// 		write (1, " ", 1);
+	// 	ptr++;
+	// }
+	// write(1, "\e[0m\n\n", 5);
+	return (0);
+	(void)e;
+}
+
+int		ft_checkexpression(char *str)
+{
+	char *ptr;
+
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
+			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
+			*ptr != '-' && *ptr != '*' && *ptr != '=')
+		{
+			if (*ptr == 'X' && *(ptr + 1) == '^')
+				ptr++;
+			else
+				return (0);
+		}
+		ptr++;
+	}
+	return (1);
+	(void)str;
+}
+
+int		ft_checkexpressions(t_env e)
+{
+	dprintf(1, "e1 = '%s'\ne2 = '%s'\n", e.e1.str, e.e2.str);
+	if (!(ft_checkexpression(e.e1.str)) ||
+		!(ft_checkexpression(e.e2.str)))
+		return (0);
+	return (1);
+}
+
+int		ft_nextsign(char *str)
+{
+	char	*ptr;
+	char	sign;
+
+	sign = '+';
+	ptr = str;
+	while (*ptr == ' ' || *ptr == '\n' || *ptr == '\t' ||
+		*ptr == '+' || *ptr == '-')
+	{
+		if (*ptr == '-')
+			sign = (sign == '+') ? '-' : '+';
+		ptr++;
+	}
+	return (sign);
+}
+
+int		ft_invalidepowers(char *str)
+{
+	char *ptr;
+
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid sign :\e[0m\n", 44);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;31m", 8);
+	ptr = str;
+	while (*ptr)
+	{
+		write (1, " ", 1);
+		if (*ptr == '^')
+			if (ft_nextsign(ptr + 1) == '-')
+			{
+				ptr++;
+				while (*ptr == ' ' || *ptr == '\n' || *ptr == '\t' ||
+						*ptr == '+' || *ptr == '-')
+				{
+					write(1, "~", 1);
+					ptr++;
+				}
+			}
+		ptr++;
+	}
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
+int		ft_positive_powers(char *str)
+{
+	char	*ptr;
+
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '^')
+			if (ft_nextsign(ptr + 1) == '-')
+				return (0);
+		ptr++;
+	}
+	return (1);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
@@ -326,11 +448,13 @@ int		main(int ac, char **av)
 		return (0);
 	if (!(ft_checkcharacters(*(av + 1))))
 		return (ft_invalidcharacters(*(av + 1)));
+	if (!(ft_positive_powers(*(av + 1))))
+		return (ft_invalidepowers(*(av + 1)));
 	if (!(ft_getexpressions(&e, *(av + 1))))
 		return (0);
+	if (!(ft_checkexpressions(e)))
+		return (ft_invalidexpressions(e));
 	// if (!(ft_decompose(&e)))
-		// return (0);
-	dprintf(1, "e1 = '%s'\ne2 = '%s'\n", e.e1.str, e.e2.str);
-	return (0);
+		// return (0);	return (0);
 	(void)av;
 }
