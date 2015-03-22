@@ -286,8 +286,11 @@ int		ft_invalidcharacters(char *str)
 				write (1, "  ", 2);
 				ptr++;
 			}
-			else
+			else if (!(*(ptr + 1) == ' ' || *(ptr + 1) == '\n' ||
+				*(ptr + 1) == '\t' || !*(ptr + 1)))
 				write(1, "~", 1);
+			else
+				write(1, " ", 1);
 		}
 		else
 			write (1, " ", 1);
@@ -310,7 +313,9 @@ int		ft_checkcharacters(char *str)
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^')
 				ptr++;
-			else if (*ptr != 'X')
+			else if (*ptr != 'X' || (*ptr == 'X' &&
+				*(ptr + 1) != ' ' && *(ptr + 1) != '\n' &&
+				*(ptr + 1) != '\t' && (*(ptr + 1) != '~')))
 				return (0);
 		}
 		ptr++;
@@ -397,7 +402,7 @@ int		ft_nextsign(char *str)
 	return (sign);
 }
 
-int		ft_invalidepowers(char *str)
+int		ft_invalidepowerssign(char *str)
 {
 	char *ptr;
 
@@ -536,6 +541,14 @@ int		ft_error(char n)
 	return (0);
 }
 
+int		ft_checkpowers(char *str)
+{
+	char *ptr;
+
+	ptr = str;
+	return (0);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
@@ -549,7 +562,10 @@ int		main(int ac, char **av)
 	if (!(ft_checkcharacters(*(av + 1))))
 		error += 1 + ft_invalidcharacters(*(av + 1));
 	if (!(ft_checkpowerssign(*(av + 1))))
-		error += 1 + ft_invalidepowers(*(av + 1));
+		error += 1 + ft_invalidepowerssign(*(av + 1));
+	if (!(ft_checkpowers(*(av + 1))))
+		error += 1;
+		// error += 1 + ft_invalidepowers(*(av + 1));
 	if (!(ft_checkextremval(*(av + 1))))
 		warning += 1 + ft_invalideextrem(*(av + 1));
 	// if (!(ft_closed(*(av + 1))))
