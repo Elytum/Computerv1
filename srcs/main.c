@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+//clear && make re && ./computor "- + -5 * X ++ -2148000 *+ X^1 - - X^1 = 8 -+--4 + 4^"
 void		ft_putnbr(int n)
 {
 	char	buff[2];
@@ -309,7 +309,7 @@ int		ft_checkcharacters(char *str)
 	{
 		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
 			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '=')
+			*ptr != '-' && *ptr != '*' && *ptr != '=' && *ptr != '^')
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^')
 				ptr++;
@@ -590,6 +590,103 @@ int		ft_invalidpower(char *str)
 	return (0);
 }
 
+int		ft_checklast(char *str)
+{
+	char	*ptr;
+
+	ptr = str;
+	while (*ptr)
+		ptr++;
+	while (ptr != str && *ptr != '+' && *ptr != '-' && *ptr != '*')
+		ptr--;
+	if (ptr == str)
+		return (1);
+	while (*ptr)
+	{
+		if (*ptr == 'X' || (*ptr >= '0' && *ptr <= '9'))
+			return (1);
+		ptr++;
+	}
+	return (0);
+}
+
+int		ft_invalidlast(char *str)
+{
+	char *ptr;
+	char *p;
+
+	ptr = str;
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid last :\e[0m\n", 44);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;31m", 8);
+	while (*ptr)
+		ptr++;
+	while (ptr != str && *ptr != '+' && *ptr != '-' && *ptr != '*')
+		ptr--;
+	p = ptr;
+	while (p != str)
+	{
+		write(1, " ", 1);
+		p--;
+	}
+	while (*ptr)
+	{
+		write(1, "~", 1);
+		ptr++;
+	}
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
+int		ft_checkpowervalue(char *str)
+{
+	char *ptr;
+
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '^')
+		{
+			ptr++;
+			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+				ptr++;
+			if (*ptr < '0' || *ptr > '9')
+				return (0);
+		}
+		else
+			ptr++;
+	}
+	return (1);
+}
+
+int		ft_invalidpowersvalue(char *str)
+{
+	char *ptr;
+	char *p;
+	char c;
+
+	ptr = str;
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power value :\e[0m\n", 51);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;31m", 8);
+	while (*ptr)
+	{
+		if (*ptr == '^')
+		{
+			p = ptr + 1;
+			while (*p == ' ' || *p == '\t' || *p == '\n')
+				p++;
+			c = (*p < '0' || *p > '9') ? '~' : ' ';
+			while (ptr != p)
+				write(1, &c, (ptr++ > 0));
+		}
+		else
+			write(1, " ", (ptr++ > 0));
+	}
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
@@ -602,15 +699,17 @@ int		main(int ac, char **av)
 		return (0);
 	if (!(ft_checkcharacters(*(av + 1))))
 		error += 1 + ft_invalidcharacters(*(av + 1));
-	if (!(ft_checkpowerssign(*(av + 1))))
-		error += 1 + ft_invalidpowerssign(*(av + 1));
 	if (!(ft_checkpowers(*(av + 1))))
 		error += 1 + ft_invalidpower(*(av + 1));
-		// error += 1 + ft_invalidpowers(*(av + 1));
+	if (!(ft_checkpowerssign(*(av + 1))))
+		error += 1 + ft_invalidpowerssign(*(av + 1));
+	if (!(ft_checkpowervalue(*(av + 1))))
+		// error += 1;
+		error += 1 + ft_invalidpowersvalue(*(av + 1));
+	if (!(ft_checklast(*(av + 1))))
+		error += 1 + ft_invalidlast(*(av + 1));
 	if (!(ft_checkextremval(*(av + 1))))
 		warning += 1 + ft_invalidextrem(*(av + 1));
-	// if (!(ft_closed(*(av + 1))))
-		// warning += 1;
 		// error += 1 + ft_invalidpowers(*(av + 1));
 	if (error)
 		return (ft_error(error));
