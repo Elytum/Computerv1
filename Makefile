@@ -12,12 +12,20 @@
 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -I./includes -g
+CFLAGS = -Wall -Werror -Wextra -I./includes -g -O3
 #--------------Name-------------------------#
 NAME = computor
 
 #--------------Sources----------------------#
-FILES =	main.c
+FILES =	main.c		\
+		libft.c		\
+		libft2.c	\
+		parsing.c	\
+		verifs.c	\
+		verifs2.c	\
+		verifs3.c	\
+		verifs4.c	\
+		verifs5.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 OBJ = $(addprefix $(BASEDIR)/, $(OBJECT))
