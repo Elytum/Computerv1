@@ -77,26 +77,21 @@ int		ft_checkpowervalue(char *str)
 	ptr = str;
 	while (*ptr)
 	{
-		if (*ptr == '^')
+		if (*ptr == '^' && ptr++)
 		{
-			ptr++;
 			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
 				ptr++;
 			while (*ptr == '+' || *ptr == '-')
 				ptr++;
-			if (*ptr < '0' || *ptr > '9')
+			if ((*ptr < '0' || *ptr > '9') && (*ptr == '.' && ptr++))
 			{
-				if (*ptr == '.')
-				{
+				while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
 					ptr++;
-					while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
-						ptr++;
-					if (*ptr < '0' || *ptr > '9')
-						return (0);
-				}
-				else
+				if (*ptr < '0' || *ptr > '9')
 					return (0);
 			}
+			else if (*ptr < '0' || *ptr > '9')
+				return (0);
 		}
 		else
 			ptr++;
@@ -116,9 +111,8 @@ int		ft_invalidpowersvalue(char *str)
 	write(1, BN_ENTER_RED, BN_ENTER_RED_LEN);
 	while (*ptr)
 	{
-		if (*ptr == '^')
+		if (*ptr == '^' && (p = ptr + 1))
 		{
-			p = ptr + 1;
 			while (*p == ' ' || *p == '\t' || *p == '\n')
 				p++;
 			while (*p == '+' || *p == '-')
