@@ -833,38 +833,54 @@ int		ft_checkequalities(char *str)
 	return (0);
 }
 
-int		main(int ac, char **av)
+int		ft_verifs2(char *line, char error, char warning)
 {
-	t_env	e;
+	if (!(ft_checkdoublepoints(line)))
+		error += 1 + ft_invaliddoublepoints(line);
+	if (!(ft_checkextremval(line)))
+		warning += 1 + ft_invalidextrem(line);
+	if (!(ft_checksplittedval(line)))
+		warning += 1 + ft_invalidsplittedval(line);
+	if (error)
+		return (ft_error(error));
+	if (warning)
+		ft_warning(warning);
+	return (1);
+}
+
+int		ft_verifs(int ac, char *line)
+{
 	char	error;
 	char	warning;
 
 	error = 0;
 	warning = 0;
 	if (ac != 2)
+	{
+		write(1, "\e[1;31merror: \e[0m\e[1;29mwrong number of arguments\e[0m\n", 55);
 		return (0);
-	if (!(ft_checkequalities(*(av + 1))))
+	}
+	if (!(ft_checkequalities(line)))
 		error += 1;
-	if (!(ft_checkcharacters(*(av + 1))))
-		error += 1 + ft_invalidcharacters(*(av + 1));
-	if (!(ft_checkpowers(*(av + 1))))
-		error += 1 + ft_invalidpower(*(av + 1));
-	if (!(ft_checkpowerssign(*(av + 1))))
-		error += 1 + ft_invalidpowerssign(*(av + 1));
-	if (!(ft_checkpowervalue(*(av + 1))))
-		error += 1 + ft_invalidpowersvalue(*(av + 1));
-	if (!(ft_checklast(*(av + 1))))
-		error += 1 + ft_invalidlast(*(av + 1));
-	if (!(ft_checkdoublepoints(*(av + 1))))
-		error += 1 + ft_invaliddoublepoints(*(av + 1));
-	if (!(ft_checkextremval(*(av + 1))))
-		warning += 1 + ft_invalidextrem(*(av + 1));
-	if (!(ft_checksplittedval(*(av + 1))))
-		warning += 1 + ft_invalidsplittedval(*(av + 1));
-	if (error)
-		return (ft_error(error));
-	if (warning)
-		ft_warning(warning);
+	if (!(ft_checkcharacters(line)))
+		error += 1 + ft_invalidcharacters(line);
+	if (!(ft_checkpowers(line)))
+		error += 1 + ft_invalidpower(line);
+	if (!(ft_checkpowerssign(line)))
+		error += 1 + ft_invalidpowerssign(line);
+	if (!(ft_checkpowervalue(line)))
+		error += 1 + ft_invalidpowersvalue(line);
+	if (!(ft_checklast(line)))
+		error += 1 + ft_invalidlast(line);
+	return (ft_verifs2(line, error, warning));
+}
+
+int		main(int ac, char **av)
+{
+	t_env	e;
+
+	if (!(ft_verifs(ac, *(av + 1))))
+		return (0);
 if (!(ft_getexpressions(&e, *(av + 1))))
 return (0);
 ft_checkexpressions(e);
