@@ -44,6 +44,10 @@ typedef struct		s_env
 #define WRONG_SPLIT_LEN 51
 #define WRONG_POWER_VALUE RED_COLOR"error: "OUT_COLOR""WHITE_COLOR"invalid power value(s) :\n"OUT_COLOR
 #define WRONG_POWER_VALUE_LEN 54
+#define WRONG_POWER_SIGN RED_COLOR"error: "OUT_COLOR""WHITE_COLOR"invalid power sign(s) :\n"OUT_COLOR
+#define WRONG_POWER_SIGN_LEN 53
+#define WRONG_CHARACTERS RED_COLOR"error: "OUT_COLOR""WHITE_COLOR"invalid character(s) :\n"OUT_COLOR
+#define WRONG_CHARACTERS_LEN 52
 
 #define OUT_BNBN OUT_COLOR"\n\n"
 #define OUT_BNBN_LEN 5
