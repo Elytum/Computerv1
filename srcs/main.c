@@ -704,7 +704,6 @@ int		main(int ac, char **av)
 	if (!(ft_checkpowerssign(*(av + 1))))
 		error += 1 + ft_invalidpowerssign(*(av + 1));
 	if (!(ft_checkpowervalue(*(av + 1))))
-		// error += 1;
 		error += 1 + ft_invalidpowersvalue(*(av + 1));
 	if (!(ft_checklast(*(av + 1))))
 		error += 1 + ft_invalidlast(*(av + 1));
