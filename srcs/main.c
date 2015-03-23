@@ -767,6 +767,64 @@ int		ft_invaliddoublepoints(char *str)
 	return (0);
 }
 
+int		ft_splittedval(char *str)
+{
+	char *ptr;
+
+	ptr = str;
+	while (*ptr == '.' || (*ptr >= '0' && *ptr <= '9'))
+		ptr++;
+	while (*ptr == ' ' || *ptr == '\n' || *ptr == '\t')
+		ptr++;
+	return ((*ptr >= '0' && *ptr <= '9') || *ptr == '.');
+}
+
+int		ft_checksplittedval(char *str)
+{
+	char *ptr;
+
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '.' || (*ptr >= '0' && *ptr <= '9'))
+		{
+			if (ft_splittedval(ptr))
+				return (0);
+			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' ||
+				(*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+				ptr++;
+		}
+		else
+			ptr++;
+	}
+	return (1);
+}
+
+int		ft_invalidsplittedval(char *str)
+{
+	char *ptr;
+	char c;
+
+	write(1, "\e[1;35mwarning: \e[0m\e[1;29msplitted value :\e[0m\n", 48);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;35m", 8);
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '.' || (*ptr >= '0' && *ptr <= '9'))
+		{
+			c = (ft_splittedval(ptr)) ? '~' : ' ';
+			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' ||
+				(*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+				write(1, &c, (ptr++ > 0));
+		}
+		else
+			write(1, " ", (ptr++ > 0));
+	}
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
@@ -791,7 +849,12 @@ int		main(int ac, char **av)
 		error += 1 + ft_invaliddoublepoints(*(av + 1));
 	if (!(ft_checkextremval(*(av + 1))))
 		warning += 1 + ft_invalidextrem(*(av + 1));
-		// error += 1 + ft_invalidpowers(*(av + 1));
+	if (!(ft_checksplittedval(*(av + 1))))
+	// {
+		// dprintf(1, "DETECTED\n");
+		// warning += 1;
+	// }
+		warning += 1 + ft_invalidsplittedval(*(av + 1));
 	if (error)
 		return (ft_error(error));
 // if (!(ft_getexpressions(&e, *(av + 1))))
