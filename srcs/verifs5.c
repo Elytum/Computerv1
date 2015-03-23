@@ -87,7 +87,7 @@ int		ft_invalidcharacters(char *str)
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^' && ptr++)
 				write (1, "  ", 2);
-			else if (!(*(ptr + 1) == ' ' || *(ptr + 1) == '\n' ||
+			else if (*ptr != 'X' || !(*(ptr + 1) == ' ' || *(ptr + 1) == '\n' ||
 				*(ptr + 1) == '\t' || !*(ptr + 1)))
 				write(1, "~", 1);
 			else
