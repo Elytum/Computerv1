@@ -406,7 +406,7 @@ int		ft_invalidpowerssign(char *str)
 {
 	char *ptr;
 
-	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power sign :\e[0m\n", 50);
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power sign(s) :\e[0m\n", 53);
 	write(1, str, strlen(str));
 	write(1, "\n\e[1;31m", 8);
 	ptr = str;
@@ -454,25 +454,19 @@ int		ft_checkval(char *str)
 	ptr = str;
 	value = 0;
 	max = (ft_nextsign(ptr) == '+') ? MAX_INT : MIN_INT;
-	// dprintf(1, "Testing '%s'\nMax = %u\n", str, max);
 	while (*ptr == '+' || *ptr == '-' ||
 		*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
 		ptr++;
-	// dprintf(1, "Cut '%s'\n", ptr);
 	while ((*ptr >= '0' && *ptr <= '9') ||
 		*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
 	{
 		if (*ptr >= '0' && *ptr <= '9')
 		{
 			if (((value = value * 10 + *ptr - '0') > max))
-			{
-				// dprintf(1, "Return 0 with %u\n\n", value);
 				return (0);
-			}
 		}
 		ptr++;
 	}
-	// dprintf(1, "Return 1 with %u\n\n", value);
 	return (1);
 }
 
@@ -537,6 +531,19 @@ int		ft_error(char n)
 		write(1, "\e[1;31m", 7);
 		ft_putnbr(n);
 		write(1, " errors detected, can't process without correction\e[0m\n", 57);
+	}
+	return (0);
+}
+
+int		ft_warning(char n)
+{
+	if (n == 1)
+		write(1, "\e[1;35mOne warning detected, remember, answer might be wrong\e[0m\n", 65);
+	else
+	{
+		write(1, "\e[1;35m", 7);
+		ft_putnbr(n);
+		write(1, " warnings detected, remember, answer might be wrong\e[0m\n", 56);
 	}
 	return (0);
 }
@@ -679,7 +686,7 @@ int		ft_invalidpowersvalue(char *str)
 	char c;
 
 	ptr = str;
-	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power value :\e[0m\n", 51);
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power value(s) :\e[0m\n", 54);
 	write(1, str, strlen(str));
 	write(1, "\n\e[1;31m", 8);
 	while (*ptr)
@@ -747,7 +754,7 @@ int		ft_invaliddoublepoints(char *str)
 	char *ptr;
 	char c;
 
-	write(1, "\e[1;31merror: \e[0m\e[1;29mdouble points detected :\e[0m\n", 54);
+	write(1, "\e[1;31merror: \e[0m\e[1;29mdouble point(s) detected :\e[0m\n", 56);
 	write(1, str, strlen(str));
 	write(1, "\n\e[1;31m", 8);
 	ptr = str;
@@ -805,7 +812,7 @@ int		ft_invalidsplittedval(char *str)
 	char *ptr;
 	char c;
 
-	write(1, "\e[1;35mwarning: \e[0m\e[1;29msplitted value :\e[0m\n", 48);
+	write(1, "\e[1;35mwarning: \e[0m\e[1;29msplitted value(s) :\e[0m\n", 51);
 	write(1, str, strlen(str));
 	write(1, "\n\e[1;35m", 8);
 	ptr = str;
@@ -850,13 +857,11 @@ int		main(int ac, char **av)
 	if (!(ft_checkextremval(*(av + 1))))
 		warning += 1 + ft_invalidextrem(*(av + 1));
 	if (!(ft_checksplittedval(*(av + 1))))
-	// {
-		// dprintf(1, "DETECTED\n");
-		// warning += 1;
-	// }
 		warning += 1 + ft_invalidsplittedval(*(av + 1));
 	if (error)
 		return (ft_error(error));
+	if (warning)
+		ft_warning(warning);
 // if (!(ft_getexpressions(&e, *(av + 1))))
 // return (0);
 // if (!(ft_checkexpressions(e)))
