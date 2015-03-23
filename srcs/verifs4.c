@@ -15,12 +15,12 @@
 int		ft_error(char n)
 {
 	if (n == 1)
-		write(1, "\e[1;31mOne error detected, can't process without correction\e[0m\n", 64);
+		write(1, SINGLE_ERROR, SINGLE_ERROR_LEN);
 	else
 	{
-		write(1, "\e[1;31m", 7);
+		write(1, BN_ENTER_RED, BN_ENTER_RED_LEN);
 		ft_putnbr(n);
-		write(1, " errors detected, can't process without correction\e[0m\n", 57);
+		write(1, MULT_ERROR, MULT_ERROR_LEN);
 	}
 	return (0);
 }
@@ -28,12 +28,12 @@ int		ft_error(char n)
 int		ft_warning(char n)
 {
 	if (n == 1)
-		write(1, "\e[1;35mOne warning detected, remember, answer might be wrong\e[0m\n", 65);
+		write(1, SINGLE_WARNING, SINGLE_WARNING_LEN);
 	else
 	{
-		write(1, "\e[1;35m", 7);
+		write(1, BN_ENTER_PURPLE, BN_ENTER_PURPLE_LEN);
 		ft_putnbr(n);
-		write(1, " warnings detected, remember, answer might be wrong\e[0m\n", 56);
+		write(1, MULT_WARNING, MULT_WARNING_LEN);
 	}
 	return (0);
 }
@@ -93,9 +93,9 @@ int		ft_invalidextrem(char *str)
 	char	c;
 
 	ptr = str;
-	write(1, "\e[1;35mwarning: \e[0m\e[1;29mint limits overreached :\e[0m\n", 56);
+	write(1, WRONG_EXTREM, WRONG_EXTREM_LEN);
 	write(1, str, strlen(str));
-	write(1, "\n\e[1;35m", 8);
+	write(1, BN_ENTER_PURPLE, BN_ENTER_PURPLE_LEN);
 	while (*ptr)
 	{
 		if ((*ptr >= '0' && *ptr <= '9') || *ptr == '+' || *ptr == '-')

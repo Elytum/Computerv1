@@ -48,6 +48,17 @@ typedef struct		s_env
 #define WRONG_POWER_SIGN_LEN 53
 #define WRONG_CHARACTERS RED_COLOR"error: "OUT_COLOR""WHITE_COLOR"invalid character(s) :\n"OUT_COLOR
 #define WRONG_CHARACTERS_LEN 52
+#define WRONG_EXTREM PURPLE_COLOR"warning: "OUT_COLOR""WHITE_COLOR"int limits overreached :\n"OUT_COLOR
+#define WRONG_EXTREM_LEN 56
+
+#define SINGLE_ERROR RED_COLOR"One error detected, can't process without correction\n"OUT_COLOR
+#define SINGLE_ERROR_LEN 64
+#define MULT_ERROR " errors detected, can't process without correction\n"OUT_COLOR
+#define MULT_ERROR_LEN 57
+#define SINGLE_WARNING PURPLE_COLOR"One warning detected, remember, answer might be wrong\n"OUT_COLOR
+#define SINGLE_WARNING_LEN 65
+#define MULT_WARNING " warnings detected, remember, answer might be wrong\n"OUT_COLOR
+#define MULT_WARNING_LEN 56
 
 #define OUT_BNBN OUT_COLOR"\n\n"
 #define OUT_BNBN_LEN 5
