@@ -313,7 +313,7 @@ int		ft_checkcharacters(char *str)
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^')
 				ptr++;
-			else if (*ptr != 'X' || (*ptr == 'X' &&
+			else if (*ptr != 'X' || (*ptr == 'X' && *(ptr + 1) &&
 				*(ptr + 1) != ' ' && *(ptr + 1) != '\n' &&
 				*(ptr + 1) != '\t' && (*(ptr + 1) != '~')))
 				return (0);
@@ -323,7 +323,7 @@ int		ft_checkcharacters(char *str)
 	return (1);
 }
 
-int		ft_invalidexpressions(t_env e)
+int		ft_invalidxpressions(t_env e)
 {
 	// char *ptr;
 
@@ -402,7 +402,7 @@ int		ft_nextsign(char *str)
 	return (sign);
 }
 
-int		ft_invalidepowerssign(char *str)
+int		ft_invalidpowerssign(char *str)
 {
 	char *ptr;
 
@@ -500,7 +500,7 @@ int		ft_checkextremval(char *str)
 	return (1);
 }
 
-int		ft_invalideextrem(char *str)
+int		ft_invalidextrem(char *str)
 {
 	char	*ptr;
 	char	c;
@@ -546,6 +546,47 @@ int		ft_checkpowers(char *str)
 	char *ptr;
 
 	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == 'X')
+		{
+			ptr++;
+			while (*ptr == ' ' || *ptr == '\n' || *ptr == '\t')
+				ptr++;
+			if (*ptr != '^' && *ptr != '+' && *ptr != '-' && *ptr)
+				return (0);
+		}
+		else
+			ptr++;
+	}
+	return (1);
+}
+
+int		ft_invalidpower(char *str)
+{
+	char *ptr;
+	char *p;
+	char c;
+
+	ptr = str;
+	write(1, "\e[1;31merror: \e[0m\e[1;29minvalid power :\e[0m\n", 45);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;31m", 8);
+	while (*ptr)
+	{
+		if (*ptr == 'X')
+		{
+			p = ptr + 1;
+			while (*p == ' ' || *p == '\n' || *p == '\t')
+				p++;
+			c = (*p != '^' && *p != '+' && *p != '-' && *p) ? '~' : ' ';
+			while (p != ptr)
+				write(1, &c, (ptr++ > 0));
+		}
+		else
+			write(1, " ", (ptr++ > 0));
+	}
+	write(1, "\e[0m\n\n", 5);
 	return (0);
 }
 
@@ -562,21 +603,21 @@ int		main(int ac, char **av)
 	if (!(ft_checkcharacters(*(av + 1))))
 		error += 1 + ft_invalidcharacters(*(av + 1));
 	if (!(ft_checkpowerssign(*(av + 1))))
-		error += 1 + ft_invalidepowerssign(*(av + 1));
+		error += 1 + ft_invalidpowerssign(*(av + 1));
 	if (!(ft_checkpowers(*(av + 1))))
-		error += 1;
-		// error += 1 + ft_invalidepowers(*(av + 1));
+		error += 1 + ft_invalidpower(*(av + 1));
+		// error += 1 + ft_invalidpowers(*(av + 1));
 	if (!(ft_checkextremval(*(av + 1))))
-		warning += 1 + ft_invalideextrem(*(av + 1));
+		warning += 1 + ft_invalidextrem(*(av + 1));
 	// if (!(ft_closed(*(av + 1))))
 		// warning += 1;
-		// error += 1 + ft_invalidepowers(*(av + 1));
+		// error += 1 + ft_invalidpowers(*(av + 1));
 	if (error)
 		return (ft_error(error));
 // if (!(ft_getexpressions(&e, *(av + 1))))
 // return (0);
 // if (!(ft_checkexpressions(e)))
-// return (ft_invalidexpressions(e));
+// return (ft_invalidxpressions(e));
 	// if (!(ft_decompose(&e)))
 		// return (0);	return (0);
 	(void)av;
