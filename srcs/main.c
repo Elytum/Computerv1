@@ -212,40 +212,12 @@ char	*ft_simplified(char *str)
 	return (tmp);
 }
 
-int		ft_equalserror(char *str)
-{
-	char *ptr;
-
-	if (!strchr(str, '='))
-	{
-		write(1, "\e[1;31merror: \e[0m\e[1;29mno equality :\e[0m\n", 43);
-		write(1, str, strlen(str));
-		write(1, "\n", 1);
-		return (0);
-	}
-	write(1, "\e[1;31merror: \e[0m\e[1;29mtoo many equalities :\e[0m\n", 51);
-	write(1, str, strlen(str));
-	ptr = str;
-	write(1, "\n\e[1;31m", 8);
-	while (*ptr)
-	{
-		if (*ptr == '=')
-			write(1, "~", 1);
-		else
-			write(1, " ", 1);
-		ptr++;
-	}	
-	write(1, "\e[0m\n\n", 5);
-	return (0);
-}
-
 int		ft_getexpressions(t_env *e, char *line)
 {
 	char	*cptr;
 	char	*tmp;
 
-	if (!(cptr = strchr(line, '=')) || strchr(cptr + 1, '='))
-		return (ft_equalserror(line));
+	cptr = strchr(line, '=');
 	*cptr++ = '\0';
 	if (!(e->e1.str = (char *)malloc(sizeof(char) * strlen(line) + 2)))
 		return (0);
@@ -832,6 +804,35 @@ int		ft_invalidsplittedval(char *str)
 	return (0);
 }
 
+int		ft_checkequalities(char *str)
+{
+	char *ptr;
+
+	if (!strchr(str, '='))
+	{
+		write(1, "\e[1;31merror: \e[0m\e[1;29mno equality :\e[0m\n", 43);
+		write(1, str, strlen(str));
+		write(1, "\n", 1);
+		return (0);
+	}
+	if (!(strchr(strchr(str, '=') + 1, '=')))
+		return (1);
+	write(1, "\e[1;31merror: \e[0m\e[1;29mtoo many equalities :\e[0m\n", 51);
+	write(1, str, strlen(str));
+	ptr = str;
+	write(1, "\n\e[1;31m", 8);
+	while (*ptr)
+	{
+		if (*ptr == '=')
+			write(1, "~", 1);
+		else
+			write(1, " ", 1);
+		ptr++;
+	}	
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
@@ -842,6 +843,8 @@ int		main(int ac, char **av)
 	warning = 0;
 	if (ac != 2)
 		return (0);
+	if (!(ft_checkequalities(*(av + 1))))
+		error += 1;
 	if (!(ft_checkcharacters(*(av + 1))))
 		error += 1 + ft_invalidcharacters(*(av + 1));
 	if (!(ft_checkpowers(*(av + 1))))
@@ -862,8 +865,9 @@ int		main(int ac, char **av)
 		return (ft_error(error));
 	if (warning)
 		ft_warning(warning);
-// if (!(ft_getexpressions(&e, *(av + 1))))
-// return (0);
+if (!(ft_getexpressions(&e, *(av + 1))))
+return (0);
+ft_checkexpressions(e);
 // if (!(ft_checkexpressions(e)))
 // return (ft_invalidxpressions(e));
 	// if (!(ft_decompose(&e)))
