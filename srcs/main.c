@@ -702,6 +702,71 @@ int		ft_invalidpowersvalue(char *str)
 	return (0);
 }
 
+int		ft_doublepoints(char *str)
+{
+	char	n;
+	char	*ptr;
+
+	ptr = str;
+	n = 0;
+	while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' ||
+		(*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+	{
+		if (*ptr == '.')
+			n++;
+		ptr++;
+		if (n == 2)
+			return (1);
+	}
+	return (0);
+}
+
+int		ft_checkdoublepoints(char *str)
+{
+	char	*ptr;
+
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '.' || (*ptr >= '0' && *ptr <= '9'))
+		{
+			if (ft_doublepoints(ptr))
+				return (0);
+			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' ||
+				(*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+				ptr++;
+		}
+		else
+			ptr++;
+	}
+	return (1);
+}
+
+int		ft_invaliddoublepoints(char *str)
+{
+	char *ptr;
+	char c;
+
+	write(1, "\e[1;31merror: \e[0m\e[1;29mdouble points detected :\e[0m\n", 54);
+	write(1, str, strlen(str));
+	write(1, "\n\e[1;31m", 8);
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '.' || (*ptr >= '0' && *ptr <= '9'))
+		{
+			c = ft_doublepoints(ptr) ? '~' : ' ';
+			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' ||
+				(*ptr >= '0' && *ptr <= '9') || *ptr == '.')
+				write(1, &c, (ptr++ > 0));
+		}
+		else
+			write(1, " ", (ptr++ > 0));
+	}
+	write(1, "\e[0m\n\n", 5);
+	return (0);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	e;
@@ -722,6 +787,8 @@ int		main(int ac, char **av)
 		error += 1 + ft_invalidpowersvalue(*(av + 1));
 	if (!(ft_checklast(*(av + 1))))
 		error += 1 + ft_invalidlast(*(av + 1));
+	if (!(ft_checkdoublepoints(*(av + 1))))
+		error += 1 + ft_invaliddoublepoints(*(av + 1));
 	if (!(ft_checkextremval(*(av + 1))))
 		warning += 1 + ft_invalidextrem(*(av + 1));
 		// error += 1 + ft_invalidpowers(*(av + 1));
