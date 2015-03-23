@@ -20,6 +20,7 @@ NAME = computor
 FILES =	main.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
+OBJ = $(addprefix $(BASEDIR)/, $(OBJECT))
 BASEDIR = srcs
 
 CURRENT_DIR = $(shell pwd)/$(NAME)
@@ -27,12 +28,14 @@ CURRENT_DIR = $(shell pwd)/$(NAME)
 
 all:$(NAME)
 
-$(NAME):
-	@$(CC) -c $(CFLAGS)	$(addprefix $(BASEDIR)/, $(FILES))
-	@$(CC) -o $(NAME) $(OBJECT) -L /usr/lib -ltermcap
+$(NAME): $(OBJ)
+	@$(CC) -o $(NAME) $(OBJ) -L /usr/lib -ltermcap
+
+%.o: %.c
+	$(CC) -o $@ -c $(CFLAGS) $<
 
 clean :
-		rm -Rf $(OBJECT)
+		rm -Rf $(OBJ)
 
 fclean: clean
 		rm -Rf $(NAME)

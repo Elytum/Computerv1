@@ -1,8 +1,8 @@
 typedef struct		s_duo
 {
 	char			*str;
-	int				value;
-	int				power;
+	double				value;
+	double				power;
 	struct s_lst	*next;
 }					t_duo;
 

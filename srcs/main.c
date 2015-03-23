@@ -279,7 +279,7 @@ int		ft_invalidcharacters(char *str)
 	{
 		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
 			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '=')
+			*ptr != '-' && *ptr != '*' && *ptr != '=' && *ptr != '.')
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^')
 			{
@@ -307,7 +307,7 @@ int		ft_checkcharacters(char *str)
 	ptr = str;
 	while (*ptr)
 	{
-		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
+		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '.' &&
 			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
 			*ptr != '-' && *ptr != '*' && *ptr != '=' && *ptr != '^')
 		{
@@ -650,8 +650,21 @@ int		ft_checkpowervalue(char *str)
 			ptr++;
 			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
 				ptr++;
+			while (*ptr == '+' || *ptr == '-')
+				ptr++;
 			if (*ptr < '0' || *ptr > '9')
-				return (0);
+			{
+				if (*ptr == '.')
+				{
+					ptr++;
+					while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+						ptr++;
+					if (*ptr < '0' || *ptr > '9')
+						return (0);
+				}
+				else
+					return (0);
+			}
 		}
 		else
 			ptr++;
@@ -675,6 +688,8 @@ int		ft_invalidpowersvalue(char *str)
 		{
 			p = ptr + 1;
 			while (*p == ' ' || *p == '\t' || *p == '\n')
+				p++;
+			while (*p == '+' || *p == '-')
 				p++;
 			c = (*p < '0' || *p > '9') ? '~' : ' ';
 			while (ptr != p)
