@@ -1,6 +1,7 @@
+//X42 ?
+
 typedef struct		s_duo
 {
-	char			*str;
 	double			value;
 	double			power;
 	struct s_lst	*next;
@@ -9,7 +10,7 @@ typedef struct		s_duo
 typedef struct		s_expr
 {
 	char			*str;
-	char			**elems;
+	t_duo			*elems;
 }					t_expr;
 
 typedef struct		s_env
@@ -97,9 +98,9 @@ int		ft_invalidcharacters(char *str);
 int		ft_checkcharacters(char *str);
 
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 void		ft_putnbr(int n);
 void		ft_putstrarray(char **str);
@@ -113,3 +114,6 @@ int			ft_parsing_error(char *str, char here, char asked);
 char		*ft_getreduced(char *ptr);
 void		ft_simplify(char **ptr);
 char		*ft_simplified(char *str);
+
+char		**ft_splitsigns(char *str);
+void		ft_puttest(char *str);

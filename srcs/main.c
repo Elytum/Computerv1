@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/computorv1.h"
-//clear && make re && ./computor "- + -5 * X ++ -2148000 *+ X^1 - - X^1 = 8 -+--4 + 4^"
 
 int		ft_getexpressions(t_env *e, char *line)
 {
@@ -95,21 +94,27 @@ int		ft_checkexpression(char *str)
 	(void)str;
 }
 
+void	ft_compose(t_expr *e)
+{
+	// char	**tab;
+
+	// tab = ft_splitsigns(e->str);
+	// ft_putstrarray(tab);
+	ft_puttest(e->str);
+	write(1, "\n", 1);
+}
+
 int		ft_checkexpressions(t_env e)
 {
 	dprintf(1, "e1 = '%s'\ne2 = '%s'\n", e.e1.str, e.e2.str);
-	if (!(ft_checkexpression(e.e1.str)) ||
-		!(ft_checkexpression(e.e2.str)))
-		return (0);
+	ft_compose(&(e.e1));
+	ft_compose(&(e.e2));
+	// if (!(ft_checkexpression(e.e1.str)) ||
+	// 	!(ft_checkexpression(e.e2.str)))
+	// 	return (0);
+
 	return (1);
 }
-
-
-
-
-
-
-
 
 
 
