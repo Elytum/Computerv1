@@ -148,14 +148,16 @@ double			ft_getvalue(char *str)
 	char		*ptr;
 	t_values	*values;
 	char		sign;
+	double		v;
 
+	dprintf(1, "Launching with '%s', ", str);
 	values = NULL;
 	if (*str == '^')
 		sign = '+';
 	else
 		sign = *str;
-	ft_valuespushback(&values, sign, ft_get_double(str + 1));
 	ptr = str + 1;
+	ft_valuespushback(&values, sign, ft_get_double(ptr));
 	// if (*ptr == '+' || *ptr == '-')
 		// ptr++;
 	while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
@@ -166,27 +168,36 @@ double			ft_getvalue(char *str)
 		while (++ptr && ((*ptr >= '0' && *ptr <= '9') || *ptr == '.'))
 			;
 	}
-	return (ft_solvevalues(&values));
+	ft_putvalues(values);
+	v = ft_solvevalues(&values);
+	dprintf(1, "returning %f\n", v);
+	return (v);
 }
 
 void		ft_inside(char *str)
 {
-	// size_t	v;
+	double	v;
 	double	p;
 	char	*ptr;
 
-	// if (*(str + 1) >= '0' && *(str + 1) <= '9')
-	// 	v = atoi(str);
-	// else
-	// 	v = 1;
+	v = 0;
+	if (*(str + 1) >= '0' && *(str + 1) <= '9')
+		ft_getvalue(str);
+	else
+		v = 1;
 	ptr = strchr(str, 'X');
 	if (!ptr)
 		p = 0;
 	else if (*(ptr + 1) != '^')
-		p = 1;
+		if (ptr != str && *(ptr - 1) == '-')
+			p = -1;
+		else
+			p = 1;
 	else
 		p = ft_getvalue(ptr + 1);
-	dprintf(1, "With %s : Power = %f, ptr = %s\n", str, p, ptr);
+	// if (ptr && ptr != str && *(ptr - 1) != '*')
+	// 	v = 1;
+	dprintf(1, "With %s : Value = %f, Power = %f, ptr = %s\n", str, v, p, ptr);
 
 }
 
