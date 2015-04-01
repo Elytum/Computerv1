@@ -21,6 +21,12 @@ typedef struct		s_env
 	t_expr			e2;
 }					t_env;
 
+union				powunion
+{
+	double			d;
+	int				x[2];
+};
+
 #define MAX_INT 2147483647
 #define MIN_INT 2147483648
 
