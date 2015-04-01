@@ -4,7 +4,7 @@ typedef struct		s_duo
 {
 	double			value;
 	double			power;
-	struct s_lst	*next;
+	struct s_duo	*next;
 }					t_duo;
 
 typedef struct		s_expr

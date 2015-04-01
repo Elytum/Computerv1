@@ -174,38 +174,79 @@ double			ft_getvalue(char *str)
 	return (v);
 }
 
-void		ft_inside(char *str)
+t_duo		*ft_inside(char *str)
 {
-	double	v;
-	double	p;
 	char	*ptr;
+	t_duo	*duo;
 
-	v = 0;
+	if (!(duo = (t_duo *)malloc(sizeof(t_duo))))
+		return (NULL);
+	duo->next = NULL;
+	duo->value = 0;
 	if (*(str + 1) >= '0' && *(str + 1) <= '9')
-		v = ft_getvalue(str);
+		duo->value = ft_getvalue(str);
 	else
-		v = 1;
+		duo->value = 1;
 	ptr = strchr(str, 'X');
 	if (!ptr)
-		p = 0;
+		duo->power = 0;
 	else if (*(ptr + 1) != '^')
 		if (ptr != str && *(ptr - 1) == '-')
-			p = -1;
+			duo->power = -1;
 		else
-			p = 1;
+			duo->power = 1;
 	else
-		p = ft_getvalue(ptr + 1);
+		duo->power = ft_getvalue(ptr + 1);
 	// if (ptr && ptr != str && *(ptr - 1) != '*')
 	// 	v = 1;
-	dprintf(1, "With %s : Value = %f, Power = %f, ptr = %s\n", str, v, p, ptr);
+	// dprintf(1, "With %s : Value = %f, Power = %f, ptr = %s\n", str, duo->value, duo->power, ptr);
+	return (duo);
+}
 
+void		ft_lstinsert(t_duo **head, t_duo *newp)
+{
+	t_duo	*ptr;
+
+	if (!*head)
+		*head = newp;
+	else
+	{
+		ptr = *head;
+		if (newp->power < ptr->power)
+		{
+			newp->next = *head;
+			*head = newp;
+		}
+		else
+		{
+			while (ptr->next && newp->power > ptr->next->power)
+				ptr = ptr->next;
+			newp->next = ptr->next;
+			ptr->next = newp;
+		}
+	}
+}
+
+void		ft_putlol(t_duo *lst)
+{
+	dprintf(1, "Output : ");
+	while (lst)
+	{
+		if (lst->next)
+			dprintf(1, "%f X ^ %f +", lst->value, lst->power);
+		else
+			dprintf(1, "%f X ^ %f\n", lst->value, lst->power);
+		lst = lst->next;
+	}
 }
 
 void		ft_puttest(char *str)
 {
 	char	c;
 	char	*ptr;
+	t_duo	*lst;
 
+	lst = NULL;
 	while (*str)
 	{
 		ptr = str + 1;
@@ -213,10 +254,11 @@ void		ft_puttest(char *str)
 			ptr++;
 		c = *ptr;
 		*ptr = '\0';
-		ft_inside(str);
+		ft_lstinsert(&lst, ft_inside(str));
 		*ptr = c;
 		str = ptr;
 	}
+	ft_putlol(lst);
 }
 
 int			ft_split(t_env *e)
