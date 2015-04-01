@@ -150,7 +150,7 @@ double			ft_getvalue(char *str)
 	char		sign;
 	double		v;
 
-	dprintf(1, "Launching with '%s', ", str);
+	// dprintf(1, "Launching with '%s'\n", str);
 	values = NULL;
 	if (*str == '^')
 		sign = '+';
@@ -162,15 +162,15 @@ double			ft_getvalue(char *str)
 		// ptr++;
 	while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 		ptr++;
-	while (*ptr)
+	while (*ptr && *ptr != 'X' && *(ptr + 1) && *(ptr + 1) != 'X')
 	{
 		ft_valuespushback(&values, *ptr, ft_get_double(ptr + 1));
 		while (++ptr && ((*ptr >= '0' && *ptr <= '9') || *ptr == '.'))
 			;
 	}
-	ft_putvalues(values);
+	// ft_putvalues(values);
 	v = ft_solvevalues(&values);
-	dprintf(1, "returning %f\n", v);
+	// dprintf(1, "Returning %f\n", v);
 	return (v);
 }
 
@@ -182,7 +182,7 @@ void		ft_inside(char *str)
 
 	v = 0;
 	if (*(str + 1) >= '0' && *(str + 1) <= '9')
-		ft_getvalue(str);
+		v = ft_getvalue(str);
 	else
 		v = 1;
 	ptr = strchr(str, 'X');
