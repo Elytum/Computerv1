@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/computorv1.h"
+#include <math.h>
 
 size_t		ft_nbofc(char *str, char c)
 {
@@ -75,25 +76,97 @@ double		ft_get_double(char *str)
 
 }
 
-double		ft_getvalue(char *str)
+void			ft_valuespushback(t_values **values, char sign, double v)
 {
-	double	v;
-	char	*ptr;
+	t_values	*newp;
+	t_values	*ptr;
 
-	v = ft_get_double(str);
-	ptr = str;
-	if (*ptr == '+' || *ptr == '-')
-		ptr++;
+
+	if (!(newp = (t_values *)malloc(sizeof(t_values))))
+		return ;
+	newp->sign = sign;
+	newp->v = v;
+	newp->next = NULL;
+	if (!*values)
+		*values = newp;
+	else
+	{
+		ptr = *values;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = newp;
+	}
+}
+
+void			ft_putvalues(t_values *ptr)
+{
+	dprintf(1, "Test : ");
+	while (ptr)
+	{
+		dprintf(1, ((ptr->next) ? "%c %f " : "%c %f\n"), ptr->sign, ptr->v);
+		ptr = ptr->next;
+	}
+}
+
+double			ft_solvevalues(t_values **head)
+{
+	t_values	*ptr;
+	t_values	*tmp;
+	double		v;
+
+	ptr = *head;
+	while (ptr->next)
+	{
+		if (ptr->next->sign == '^')
+		{
+			tmp = ptr->next;
+			ptr->v = pow(ptr->v, tmp->v);
+			ptr->next = ptr->next->next;
+			free(tmp);
+		}
+		else
+			ptr = ptr->next;
+	}
+	ptr = *head;
+	while (ptr->next)
+	{
+		tmp = ptr->next;
+		if (tmp->sign == '*')
+			ptr->v = ptr->v * tmp->v;
+		ptr->next = ptr->next->next;
+		free(tmp);
+	}
+	v = ptr->v;
+	if (ptr->sign == '-')
+		v *= -1;
+	free(ptr);
+	return (v);
+}
+
+double			ft_getvalue(char *str)
+{
+	char		*ptr;
+	t_values	*values;
+	char		sign;
+
+	values = NULL;
+	if (*str == '^')
+		sign = '+';
+	else
+		sign = *str;
+	ft_valuespushback(&values, sign, ft_get_double(str + 1));
+	ptr = str + 1;
+	// if (*ptr == '+' || *ptr == '-')
+		// ptr++;
 	while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 		ptr++;
 	while (*ptr)
 	{
-		ptr++;
-		v *= ft_get_double(ptr);
-		while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
-			ptr++;
+		ft_valuespushback(&values, *ptr, ft_get_double(ptr + 1));
+		while (++ptr && ((*ptr >= '0' && *ptr <= '9') || *ptr == '.'))
+			;
 	}
-	return (v);
+	return (ft_solvevalues(&values));
 }
 
 void		ft_inside(char *str)
@@ -112,7 +185,7 @@ void		ft_inside(char *str)
 	else if (*(ptr + 1) != '^')
 		p = 1;
 	else
-		p = ft_getvalue(ptr + 2);
+		p = ft_getvalue(ptr + 1);
 	dprintf(1, "With %s : Power = %f, ptr = %s\n", str, p, ptr);
 
 }

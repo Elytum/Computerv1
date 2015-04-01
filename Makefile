@@ -25,7 +25,8 @@ FILES =	main.c		\
 		verifs2.c	\
 		verifs3.c	\
 		verifs4.c	\
-		verifs5.c
+		verifs5.c	\
+		ft_math.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 OBJ = $(addprefix $(BASEDIR)/, $(OBJECT))

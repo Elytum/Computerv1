@@ -10,12 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/computorv1.h"
+
 double				ft_sqrt(const double fg)
 {
 	double			n;
 	double			lstx;
 
-	n = fd / 2.0;
+	n = fg / 2.0;
 	lstx = 0.0;
 	while (n != lstx)
 	{
@@ -25,7 +27,7 @@ double				ft_sqrt(const double fg)
 	return (n);
 }
 
-double				ft_pow(const double a, const double b)
+double				ft_pow(double a, double b)
 {
 	union powunion	u;
 	double			r;

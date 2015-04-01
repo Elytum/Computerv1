@@ -27,6 +27,13 @@ union				powunion
 	int				x[2];
 };
 
+typedef struct		s_values
+{
+	char			sign;
+	double			v;
+	struct s_values	*next;
+}					t_values;
+
 #define MAX_INT 2147483647
 #define MIN_INT 2147483648
 
@@ -123,3 +130,6 @@ char		*ft_simplified(char *str);
 
 char		**ft_splitsigns(char *str);
 void		ft_puttest(char *str);
+
+double				ft_sqrt(const double fg);
+double				ft_pow(double a, double b);
