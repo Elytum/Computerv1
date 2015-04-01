@@ -1,23 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 
-double		sqroot(double n)
-{
-	double	estimate;
-	double	newEstimate;
-	double	i;
-
-	i = 0;
-	newEstimate = n - 1;
-	estimate = n + 0.9;//estimate can be made closer to expected value but the number to square will also work just needs to run a few more times
-	while (estimate != newEstimate && i != 2000 && ++i)
-	// for (int i =0;estimate != newEstimate && i != 20;i++){// i is only to stop cycling due to calculation errors in using doubles
-	{	estimate = newEstimate;
-		newEstimate = estimate- (estimate*estimate - n)/(2*estimate);
-	}
-return newEstimate;
-}
-
 double ft_sqrt( const double fg)
 { 
  double n = fg / 2.0;
@@ -31,7 +14,7 @@ double ft_sqrt( const double fg)
 }
 
 // should be much more precise with large b
-inline double ft_pow(double a, double b) {
+static double ft_pow(double a, double b) {
   // calculate approximation with fraction of the exponent
   int e = (int) b;
   union {
@@ -55,18 +38,33 @@ inline double ft_pow(double a, double b) {
   return r * u.d;
 }
 
+static double ft_pow2(double a, double b) {
+  union {
+    double d;
+    int x[2];
+  } u = { a };
+  u.x[1] = (int)(b * (u.x[1] - 1072632447) + 1072632447);
+  u.x[0] = 0;
+  return u.d;
+}
+
 int main()
 {
 	double v1;
 	double v2;
-	// double v;
-	// double x;
-	// double real;
-	// double ft;
+	double v;
+	double i;
 
 	v1 = 2.5;
 	v2 = 4.4534;
-	dprintf(1, "%f vs %f vs %f\n", ft_pow(v1, v2), pow(v1, v2), ft_pow(v1, v2));
+	i = 0;
+	while (i++ < 3000000000)
+	{
+		v = ft_pow2(v1, v2);
+		v1 += 0.0001;
+		v2 += 0.0001;
+	}
+	// dprintf(1, "%f vs %f vs %f\n", ft_pow(v1, v2), pow(v1, v2), ft_pow2(v1, v2));
 	// v = 4574576468346847987749846876876874453468346848649864.546468846844355467876783276578657861354346547612435427468346845;
 	// dprintf(1, "%f :\n%f vs\n%f\ndiff = %a\n", v, sqrt(v), ft_sqrt(v), ft_sqrt(v) - sqrt(v));
 	// while (v > 1)
