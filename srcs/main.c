@@ -109,12 +109,22 @@ void		ft_putduo(double value, double power)
 	if (value)
 	{
 		if (power)
-			dprintf(1, "%f * X ^ %f", value, power);
+		{
+			if (power == 1)
+				dprintf(1, "%f * X", value);
+			else
+				dprintf(1, "%f * X ^ %f", value, power);
+		}
 		else
 			dprintf(1, "%f", value);
 	}
 	else if (power)
-		dprintf(1, "%f", power);
+	{
+		if (power == 1)
+			write(1, "X", 1);
+		else
+			dprintf(1, "X ^ %f", power);
+	}
 }
 
 void		ft_putlol(t_duo *lst)
