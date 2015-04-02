@@ -13,11 +13,6 @@
 #include "../includes/computorv1.h"
 #include <math.h>
 
-double abs2(v)
-{
-  return ((v < 0) ? -v : v);
-}
-
 double				ft_sqrt(const double fg)
 {
 	double			n;
@@ -33,7 +28,7 @@ double				ft_sqrt(const double fg)
 	return (n);
 }
 
-// double				ft_pow(double b, double p)
+// double				lol_pow(double a, double b)
 // {
 // 	// return (exp(p * log(b)));
 // 	union powunion	u;
@@ -58,33 +53,29 @@ double				ft_sqrt(const double fg)
 // }
 
 
-double lol_pow(double a, double b) {
+double ft_pow(double a, double b)
+{
   // calculate approximation with fraction of the exponent
-  int e = (int) b;
-  union {
-    double d;
-    int x[2];
-  } u = { a };
-  u.x[1] = (int)((b - e) * (u.x[1] - 1072632447) + 1072632447);
+  int e;
+  union powunion  u;
+  double r;
+
+  e = b;
+  if (b < 0)
+    return (1.0 / ft_pow(a, -b));
+  u.d = a;
+  u.x[1] = ((b - e) * (u.x[1] - 1072632447) + 1072632447);
   u.x[0] = 0;
 
   // exponentiation by squaring with the exponent's integer part
   // double r = u.d makes everything much slower, not sure why
-  double r = 1.0;
-  while (e) {
-    if (e & 1) {
+  r = 1.0;
+  while (e)
+  {
+    if (e & 1)
       r *= a;
-    }
     a *= a;
     e >>= 1;
   }
-
   return r * u.d;
-}
-
-double ft_pow(double a, double b)
-{
-  if (b < 0)
-    return (1.0 / lol_pow(a, abs2(b)));
-  return (lol_pow(a, b));
 }
