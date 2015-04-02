@@ -120,7 +120,7 @@ double			ft_solvevalues(t_values **head)
 		if (ptr->next->sign == '^')
 		{
 			tmp = ptr->next;
-			ptr->v = pow(ptr->v, tmp->v);
+			ptr->v = ft_pow(ptr->v, tmp->v);
 			ptr->next = ptr->next->next;
 			free(tmp);
 		}

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/computorv1.h"
+#include <math.h>
 
 double				ft_sqrt(const double fg)
 {
@@ -27,25 +28,27 @@ double				ft_sqrt(const double fg)
 	return (n);
 }
 
-double				ft_pow(double a, double b)
-{
-	union powunion	u;
-	double			r;
-	int				e;
 
-	u.d = a;
-	u.x[1] = (int)(b * (u.x[1] - 1072632447) + 1072632447);
-	u.x[0] = 0;
-	if (a < 0 || b < 0)
-		return (u.d);
-	r = 1.0;
-	e = b;
-	while (e)
-	{
-		if (e & 1)
-			r *= a;
-		a *= a;
-	e >>= 1;
-	}
-	return (r * u.d);
+double				ft_pow(double b, double p)
+{
+	return (exp(p * log(b)));
+	// union powunion	u;
+	// double			r;
+	// int				e;
+
+	// u.d = a;
+	// u.x[1] = (int)(b * (u.x[1] - 1072632447) + 1072632447);
+	// u.x[0] = 0;
+	// if (a < 0 || b < 0)
+	// 	return (u.d);
+	// r = 1.0;
+	// e = b;
+	// while (e)
+	// {
+	// 	if (e & 1)
+	// 		r *= a;
+	// 	a *= a;
+	// e >>= 1;
+	// }
+	// return (r * u.d);
 }
