@@ -116,5 +116,6 @@ int				ft_verifs(int ac, char *line)
 		error += 1 + ft_invalidpowersvalue(line);
 	if (!(ft_checklast(line)))
 		error += 1 + ft_invalidlast(line);
+	//CHECK DOUBLE SIGNS
 	return (ft_verifs2(line, error, warning));
 }
