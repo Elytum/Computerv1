@@ -72,27 +72,27 @@ int		ft_getexpressions(t_env *e, char *line)
 // 	(void)e;
 // }
 
-int		ft_checkexpression(char *str)
-{
-	char *ptr;
+// int		ft_checkexpression(char *str)
+// {
+// 	char *ptr;
 
-	ptr = str;
-	while (*ptr)
-	{
-		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
-			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '=')
-		{
-			if (*ptr == 'X' && *(ptr + 1) == '^')
-				ptr++;
-			else
-				return (0);
-		}
-		ptr++;
-	}
-	return (1);
-	(void)str;
-}
+// 	ptr = str;
+// 	while (*ptr)
+// 	{
+// 		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
+// 			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
+// 			*ptr != '-' && *ptr != '*' && *ptr != '=')
+// 		{
+// 			if (*ptr == 'X' && *(ptr + 1) == '^')
+// 				ptr++;
+// 			else
+// 				return (0);
+// 		}
+// 		ptr++;
+// 	}
+// 	return (1);
+// 	(void)str;
+// }
 
 void	ft_compose(t_expr *e)
 {

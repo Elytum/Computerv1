@@ -132,7 +132,9 @@ double			ft_solvevalues(t_values **head)
 	{
 		tmp = ptr->next;
 		if (tmp->sign == '*')
-			ptr->v = ptr->v * tmp->v;
+			ptr->v *= tmp->v;
+		else if (tmp->sign == '/')
+			ptr->v /= tmp->v;
 		ptr->next = ptr->next->next;
 		free(tmp);
 	}
@@ -227,16 +229,40 @@ void		ft_lstinsert(t_duo **head, t_duo *newp)
 	}
 }
 
+void		ft_putduo(double value, double power)
+{
+	if (value)
+	{
+		if (power)
+			dprintf(1, "%f * X ^ %f", value, power);
+		else
+			dprintf(1, "%f", value);
+	}
+	else if (power)
+		dprintf(1, "%f", power);
+}
+
 void		ft_putlol(t_duo *lst)
 {
-	dprintf(1, "Output : ");
-	while (lst)
+	t_duo	*ptr;
+
+	ptr = lst;
+	while (ptr)
 	{
-		if (lst->next)
-			dprintf(1, "%f X ^ %f +", lst->value, lst->power);
-		else
-			dprintf(1, "%f X ^ %f\n", lst->value, lst->power);
-		lst = lst->next;
+			if (ptr->value < 0)
+			{
+				write(1, "- ", 3);
+				ft_putduo(-ptr->value, ptr->power);
+			}
+			else
+			{
+				if (ptr != lst)
+					write(1, "+ ", 3);
+				ft_putduo(ptr->value, ptr->power);
+			}
+			if (ptr->next)
+				write(1, " ", 1);
+		ptr = ptr->next;
 	}
 }
 
@@ -357,7 +383,7 @@ void		ft_simplifysign(char **str)
 	ptr = *str;
 	while (*ptr)
 	{
-		if (*ptr == '*')
+		if (*ptr == '*' || *ptr == '/')
 		{
 			if (*(ptr + 1) == '+')
 			{

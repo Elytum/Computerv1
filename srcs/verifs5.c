@@ -81,9 +81,9 @@ int		ft_invalidcharacters(char *str)
 	write(1, BN_ENTER_RED, BN_ENTER_RED_LEN);
 	while (*ptr)
 	{
-		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' &&
+		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '.' &&
 			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '=' && *ptr != '.')
+			*ptr != '-' && *ptr != '*' && *ptr != '/' && *ptr != '=' && *ptr != '^')
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^' && ptr++)
 				write (1, "  ", 2);
@@ -110,7 +110,7 @@ int		ft_checkcharacters(char *str)
 	{
 		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '.' &&
 			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '=' && *ptr != '^')
+			*ptr != '-' && *ptr != '*' && *ptr != '/' && *ptr != '=' && *ptr != '^')
 		{
 			if (*ptr == 'X' && *(ptr + 1) == '^')
 				ptr++;

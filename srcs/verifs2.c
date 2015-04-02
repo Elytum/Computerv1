@@ -48,7 +48,7 @@ int		ft_checklast(char *str)
 	ptr = str;
 	while (*ptr)
 		ptr++;
-	while (ptr != str && *ptr != '+' && *ptr != '-' && *ptr != '*')
+	while (ptr != str && *ptr != '+' && *ptr != '-' && *ptr != '*' && *ptr != '/' && *ptr != '^')
 		ptr--;
 	if (ptr == str)
 		return (1);
@@ -72,7 +72,7 @@ int		ft_invalidlast(char *str)
 	write(1, BN_ENTER_RED, BN_ENTER_RED_LEN);
 	while (*ptr)
 		ptr++;
-	while (ptr != str && *ptr != '+' && *ptr != '-' && *ptr != '*')
+	while (ptr != str && *ptr != '+' && *ptr != '-' && *ptr != '*' && *ptr != '/' && *ptr != '^')
 		ptr--;
 	p = ptr;
 	while (p != str)
