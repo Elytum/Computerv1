@@ -104,11 +104,58 @@ int		ft_getexpressions(t_env *e, char *line)
 // 	write(1, "\n", 1);
 // }
 
+void		ft_putduo(double value, double power)
+{
+	if (value)
+	{
+		if (power)
+			dprintf(1, "%f * X ^ %f", value, power);
+		else
+			dprintf(1, "%f", value);
+	}
+	else if (power)
+		dprintf(1, "%f", power);
+}
+
+void		ft_putlol(t_duo *lst)
+{
+	t_duo	*ptr;
+
+	ptr = lst;
+	while (ptr)
+	{
+			if (ptr->value < 0)
+			{
+				write(1, "- ", 3);
+				ft_putduo(-ptr->value, ptr->power);
+			}
+			else
+			{
+				if (ptr != lst)
+					write(1, "+ ", 3);
+				ft_putduo(ptr->value, ptr->power);
+			}
+			if (ptr->next)
+				write(1, " ", 1);
+		ptr = ptr->next;
+	}
+}
+
+void	ft_put_simplified(t_env e)
+{
+	write(1, "Simplified : ", 13);
+	ft_putlol(e.e1.elems);
+	write(1, " = ", 3);
+	ft_putlol(e.e2.elems);
+	write(1, "\n", 1);
+}
+
 int		ft_checkexpressions(t_env e)
 {
 	dprintf(1, "e1 = '%s'\ne2 = '%s'\n", e.e1.str, e.e2.str);
 	e.e1.elems = ft_getduo(e.e1.str);
 	e.e2.elems = ft_getduo(e.e2.str);
+	ft_put_simplified(e);
 	// ft_compose(&(e.e1));
 	// ft_compose(&(e.e2));
 	// if (!(ft_checkexpression(e.e1.str)) ||
