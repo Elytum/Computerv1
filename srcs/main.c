@@ -94,21 +94,23 @@ int		ft_getexpressions(t_env *e, char *line)
 // 	(void)str;
 // }
 
-void	ft_compose(t_expr *e)
-{
-	// char	**tab;
+// void	ft_compose(t_expr *e)
+// {
+// 	// char	**tab;
 
-	// tab = ft_splitsigns(e->str);
-	// ft_putstrarray(tab);
-	ft_puttest(e->str);
-	write(1, "\n", 1);
-}
+// 	// tab = ft_splitsigns(e->str);
+// 	// ft_putstrarray(tab);
+// 	ft_getduo(e->str);
+// 	write(1, "\n", 1);
+// }
 
 int		ft_checkexpressions(t_env e)
 {
 	dprintf(1, "e1 = '%s'\ne2 = '%s'\n", e.e1.str, e.e2.str);
-	ft_compose(&(e.e1));
-	ft_compose(&(e.e2));
+	e.e1.elems = ft_getduo(e.e1.str);
+	e.e2.elems = ft_getduo(e.e2.str);
+	// ft_compose(&(e.e1));
+	// ft_compose(&(e.e2));
 	// if (!(ft_checkexpression(e.e1.str)) ||
 	// 	!(ft_checkexpression(e.e2.str)))
 	// 	return (0);

@@ -266,7 +266,7 @@ void		ft_putlol(t_duo *lst)
 	}
 }
 
-void		ft_puttest(char *str)
+t_duo		*ft_getduo(char *str)
 {
 	char	c;
 	char	*ptr;
@@ -284,7 +284,7 @@ void		ft_puttest(char *str)
 		*ptr = c;
 		str = ptr;
 	}
-	ft_putlol(lst);
+	return (lst);
 }
 
 int			ft_split(t_env *e)
@@ -297,7 +297,7 @@ int			ft_split(t_env *e)
 		return (0);
 	e->e1.str = total[0];
 	e->e2.str = total[1];
-	// ft_puttest(e->e1.str);
+	// ft_getduo(e->e1.str);
 	// test = ft_splitsigns(e->e1.str);
 	// ft_putstrarray(test);
 	return (1);

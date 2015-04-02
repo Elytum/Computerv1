@@ -129,7 +129,7 @@ void		ft_simplify(char **ptr);
 char		*ft_simplified(char *str);
 
 char		**ft_splitsigns(char *str);
-void		ft_puttest(char *str);
+t_duo		*ft_getduo(char *str);
 
 double				ft_sqrt(const double fg);
 double				ft_pow(double a, double b);
