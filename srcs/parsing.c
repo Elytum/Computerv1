@@ -157,14 +157,14 @@ double			ft_getvalue(char *str)
 	else
 		sign = *str;
 	ptr = str + 1;
-	ft_valuespushback(&values, sign, ft_get_double(ptr));
+	ft_valuespushback(&values, sign, strtod(ptr, NULL));
 	// if (*ptr == '+' || *ptr == '-')
 		// ptr++;
 	while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 		ptr++;
 	while (*ptr && *ptr != 'X' && *(ptr + 1) && *(ptr + 1) != 'X')
 	{
-		ft_valuespushback(&values, *ptr, ft_get_double(ptr + 1));
+		ft_valuespushback(&values, *ptr, strtod(ptr + 1, NULL));
 		while (++ptr && ((*ptr >= '0' && *ptr <= '9') || *ptr == '.'))
 			;
 	}
