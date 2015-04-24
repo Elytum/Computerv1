@@ -17,8 +17,8 @@ CFLAGS = -Wall -Werror -Wextra -I./includes -g -O3
 NAME = computor
 
 #--------------Sources----------------------#
-FILES =	main.cpp		\
-		libft.cpp		\
+FILES =	main.cpp	\
+		libft.cpp	\
 		libft2.cpp	\
 		parsing.cpp	\
 		verifs.cpp	\
@@ -29,7 +29,7 @@ FILES =	main.cpp		\
 		verifs6.cpp	\
 		ft_math.cpp
 
-OBJECT = $(patsubst %.c,%.o,$(FILES))
+OBJECT = $(patsubst %.cpp,%.o,$(FILES))
 OBJ = $(addprefix $(BASEDIR)/, $(OBJECT))
 BASEDIR = srcs
 

@@ -14,21 +14,21 @@
 
 static char		*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	char		*new;
+	char		*new_p;
 	size_t		c;
 
 	c = 0;
 	if (s)
 	{
-		if (!(new = ft_strnew(len)))
+		if (!(new_p = ft_strnew_p(len)))
 			return (NULL);
 		c = 0;
 		while (c < len)
 		{
-			new[c] = s[start + c];
+			new_p[c] = s[start + c];
 			c++;
 		}
-		return (new);
+		return (new_p);
 	}
 	return (NULL);
 }

@@ -12,14 +12,12 @@
 
 #include "../includes/computorv1.h"
 
-static int	ft_invalid_operation(char *str, int flag)
+static int	ft_invalid_operation(char *str)
 {
 	write(1, WRONG_OPERATORS, WRONG_OPERATORS_LEN);
 	write(1, str, strlen(str));
 	write(1, "\n", 1);
 	return (0);
-	(void)str;
-	(void)flag;
 }
 
 int			ft_next_operation(char *str, int flag)
@@ -34,7 +32,7 @@ int			ft_next_operation(char *str, int flag)
 		if ((*ptr == '*' || *ptr == '/' || *ptr == '^') && ptr++)
 		{
 			if (flag == -1)
-				return (ft_invalid_operation(str, 0));
+				return (ft_invalid_operation(str));
 			flag = -1;
 		}
 		else if ((*ptr == '+' || *ptr == '-' || *ptr == '=') && ptr++)
@@ -42,7 +40,7 @@ int			ft_next_operation(char *str, int flag)
 		else if ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 		{
 			if (flag == 1)
-				return (ft_invalid_operation(str, 0));
+				return (ft_invalid_operation(str));
 			flag = 1;
 			while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 				ptr++;

@@ -68,7 +68,7 @@ void				*ft_memalloc(size_t size)
 	return (memory);
 }
 
-char				*ft_strnew(size_t size)
+char				*ft_strnew_p(size_t size)
 {
 	return (ft_memalloc(size + 1));
 }

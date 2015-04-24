@@ -124,7 +124,7 @@ int		ft_next_operation(char *str, int flag);
 void		ft_putnbr(int n);
 void		ft_putstrarray(char **str);
 void		*ft_memalloc(size_t size);
-char		*ft_strnew(size_t size);
+char		*ft_strnew_p(size_t size);
 
 char		**ft_strsplit(char const *s, char c);
 

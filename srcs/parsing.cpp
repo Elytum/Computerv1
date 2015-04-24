@@ -78,23 +78,23 @@ double		ft_get_double(char *str)
 
 void			ft_valuespushback(t_values **values, char sign, double v)
 {
-	t_values	*newp;
+	t_values	*new_pp;
 	t_values	*ptr;
 
 
-	if (!(newp = (t_values *)malloc(sizeof(t_values))))
+	if (!(new_pp = (t_values *)malloc(sizeof(t_values))))
 		return ;
-	newp->sign = sign;
-	newp->v = v;
-	newp->next = NULL;
+	new_pp->sign = sign;
+	new_pp->v = v;
+	new_pp->next = NULL;
 	if (!*values)
-		*values = newp;
+		*values = new_pp;
 	else
 	{
 		ptr = *values;
 		while (ptr->next)
 			ptr = ptr->next;
-		ptr->next = newp;
+		ptr->next = new_pp;
 	}
 }
 
@@ -205,28 +205,28 @@ t_duo		*ft_inside(char *str)
 	return (duo);
 }
 
-void		ft_lstinsert(t_duo **head, t_duo *newp)
+void		ft_lstinsert(t_duo **head, t_duo *new_pp)
 {
 	t_duo	*ptr;
 
-	if (newp->value == 0)
+	if (new_pp->value == 0)
 		return ;
 	if (!*head)
-		*head = newp;
+		*head = new_pp;
 	else
 	{
 		ptr = *head;
-		if (newp->power < ptr->power)
+		if (new_pp->power < ptr->power)
 		{
-			newp->next = *head;
-			*head = newp;
+			new_pp->next = *head;
+			*head = new_pp;
 		}
 		else
 		{
-			while (ptr->next && newp->power > ptr->next->power)
+			while (ptr->next && new_pp->power > ptr->next->power)
 				ptr = ptr->next;
-			newp->next = ptr->next;
-			ptr->next = newp;
+			new_pp->next = ptr->next;
+			ptr->next = new_pp;
 		}
 	}
 }
