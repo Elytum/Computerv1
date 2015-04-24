@@ -70,6 +70,35 @@ int		ft_invalidsplittedval(char *str)
 	return (0);
 }
 
+// int		ft_checkpowervalue(char *str)
+// {
+// 	char *ptr;
+
+// 	ptr = str;
+// 	while (*ptr)
+// 	{
+// 		if (*ptr == '^' && ptr++)
+// 		{
+// 			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+// 				ptr++;
+// 			while (*ptr == '+' || *ptr == '-')
+// 				ptr++;
+// 			if ((*ptr < '0' || *ptr > '9') && (*ptr == '.' && ptr++))
+// 			{
+// 				while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
+// 					ptr++;
+// 				if (*ptr < '0' || *ptr > '9')
+// 					return (0);
+// 			}
+// 			else if (*ptr < '0' || *ptr > '9')
+// 				return (0);
+// 		}
+// 		else
+// 			ptr++;
+// 	}
+// 	return (1);
+// }
+
 int		ft_checkpowervalue(char *str)
 {
 	char *ptr;
@@ -79,19 +108,12 @@ int		ft_checkpowervalue(char *str)
 	{
 		if (*ptr == '^' && ptr++)
 		{
-			while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
-				ptr++;
-			while (*ptr == '+' || *ptr == '-')
-				ptr++;
-			if ((*ptr < '0' || *ptr > '9') && (*ptr == '.' && ptr++))
+			while (*ptr && *ptr != '+' && *ptr != '-')
 			{
-				while (*ptr == ' ' || *ptr == '\t' || *ptr == '\n')
-					ptr++;
-				if (*ptr < '0' || *ptr > '9')
+				if (*ptr == 'X' || *ptr == '=')
 					return (0);
+				ptr++;
 			}
-			else if (*ptr < '0' || *ptr > '9')
-				return (0);
 		}
 		else
 			ptr++;
@@ -113,11 +135,17 @@ int		ft_invalidpowersvalue(char *str)
 	{
 		if (*ptr == '^' && (p = ptr + 1))
 		{
-			while (*p == ' ' || *p == '\t' || *p == '\n')
+			c = ' ';
+			while (*p && *p != '+' && *p != '-')
+			{
+				if (*p == 'X' || *p == '=')
+				{
+					p++;
+					c = '~';
+					break ;
+				}
 				p++;
-			while (*p == '+' || *p == '-')
-				p++;
-			c = (*p < '0' || *p > '9') ? '~' : ' ';
+			}
 			while (ptr != p)
 				write(1, &c, (ptr++ > 0));
 		}
@@ -127,3 +155,32 @@ int		ft_invalidpowersvalue(char *str)
 	write(1, OUT_BNBN, OUT_BNBN_LEN);
 	return (0);
 }
+
+// int		ft_invalidpowersvalue(char *str)
+// {
+// 	char *ptr;
+// 	char *p;
+// 	char c;
+
+// 	ptr = str;
+// 	write(1, WRONG_POWER_VALUE, WRONG_POWER_VALUE_LEN);
+// 	write(1, str, strlen(str));
+// 	write(1, BN_ENTER_RED, BN_ENTER_RED_LEN);
+// 	while (*ptr)
+// 	{
+// 		if (*ptr == '^' && (p = ptr + 1))
+// 		{
+// 			while (*p == ' ' || *p == '\t' || *p == '\n')
+// 				p++;
+// 			while (*p == '+' || *p == '-')
+// 				p++;
+// 			c = (*p < '0' || *p > '9') ? '~' : ' ';
+// 			while (ptr != p)
+// 				write(1, &c, (ptr++ > 0));
+// 		}
+// 		else
+// 			write(1, " ", (ptr++ > 0));
+// 	}
+// 	write(1, OUT_BNBN, OUT_BNBN_LEN);
+// 	return (0);
+// }
