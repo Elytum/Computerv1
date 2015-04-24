@@ -11,22 +11,23 @@
 # **************************************************************************** #
 
 # -------------Compilateur------------------#
-CC = cc
+CC = g++
 CFLAGS = -Wall -Werror -Wextra -I./includes -g -O3
 #--------------Name-------------------------#
 NAME = computor
 
 #--------------Sources----------------------#
-FILES =	main.c		\
-		libft.c		\
-		libft2.c	\
-		parsing.c	\
-		verifs.c	\
-		verifs2.c	\
-		verifs3.c	\
-		verifs4.c	\
-		verifs5.c	\
-		ft_math.c
+FILES =	main.cpp		\
+		libft.cpp		\
+		libft2.cpp	\
+		parsing.cpp	\
+		verifs.cpp	\
+		verifs2.cpp	\
+		verifs3.cpp	\
+		verifs4.cpp	\
+		verifs5.cpp	\
+		verifs6.cpp	\
+		ft_math.cpp
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 OBJ = $(addprefix $(BASEDIR)/, $(OBJECT))

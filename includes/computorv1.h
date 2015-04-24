@@ -64,6 +64,10 @@ typedef struct		s_values
 #define WRONG_CHARACTERS_LEN 52
 #define WRONG_EXTREM PURPLE_COLOR"warning: "OUT_COLOR""WHITE_COLOR"int limits overreached :\n"OUT_COLOR
 #define WRONG_EXTREM_LEN 56
+#define WRONG_OPERATORS RED_COLOR"warning: "OUT_COLOR""WHITE_COLOR"operators must be separed by numbers :\n"OUT_COLOR
+#define WRONG_OPERATORS_LEN 70
+
+//VALUES SEPARATORS : X * 2 * * 2
 
 #define SINGLE_ERROR RED_COLOR"One error detected, can't process without correction\n"OUT_COLOR
 #define SINGLE_ERROR_LEN 64
@@ -109,6 +113,8 @@ int		ft_invalidpowerssign(char *str);
 int		ft_checkpowerssign(char *str);
 int		ft_invalidcharacters(char *str);
 int		ft_checkcharacters(char *str);
+
+int		ft_next_operation(char *str, int flag);
 
 #include <string.h>
 #include <stdlib.h>
