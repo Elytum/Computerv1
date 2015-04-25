@@ -243,16 +243,192 @@ int		ft_isseconddegree(t_duo **duos, double *a, double *b, double *c)
 	return (ret);
 }
 
-int		ft_checkexpressions(t_env e)
+void		ft_putcanonic(t_env e)
 {
 	double	a;
 	double	b;
 	double	c;
-	double	d;
-	double	sd;
+
+	a = e.a;
+	b = -e.b / (2 * e.a);
+	c = -(e.b * e.b - 4 * e.a * e.c) / (4 * e.a * e.a);
+	write(1, "Canonic form : ", 15);
+	if (a != 0)
+	{
+		if (a < 0)
+			dprintf(1, "- %f ", -a);
+		else
+			dprintf(1, "%f ", a);
+		if (b != 0)
+		{
+			if (b < 0)
+				dprintf(1, "(x - %f) ^ 2 ", -b);
+			else
+				dprintf(1, "(x + %f) ^ 2 ", b);
+		}
+		else
+			write(1, "x ^ 2", 5);
+	}
+	if (c < 0)
+		dprintf(1, "- %f\n", -c);
+	else if (c > 0)
+		dprintf(1, "+ %f\n", c);
+	else
+		write(1, "\n", 1);
+}
+
+void	ft_putquadra(t_env e)
+{
+	write (1, "Quadratic equation : ", 21);
+	if (e.a < 0)
+		dprintf(1, "- %f X ^ 2 ", -e.a);
+	else if (e.a > 0)
+		dprintf(1, "%f X ^ 2 ", e.a);
+	if (e.b < 0)
+		dprintf(1, "- %f X ", -e.b);
+	else if (e.b > 0)
+		dprintf(1, "+ %f X ", e.b);
+	if (e.c < 0)
+		dprintf(1, "- %f ", -e.c);
+	else if (e.c > 0)
+		dprintf(1, "+ %f ", e.c);
+	write(1, "\n", 1);
+}
+
+void	ft_put_upperfacto(t_env e)
+{
+	if (e.x1 == e.x2)
+	{
+		if (e.x1 < 0)
+			dprintf(1, "(x - %f) ^ 2\n", -e.x1);
+		else if (e.x1 > 0)
+			dprintf(1, "(x + %f) ^ 2\n", e.x1);
+		else
+			dprintf(1, "x ^ 2\n");
+	}
+	else if (e.x1 == 0)
+	{
+		if (e.x2 < 0)
+			dprintf(1, "x (x - %f)\n", -e.x2);
+		else
+			dprintf(1, "x (x + %f)\n", e.x2);
+	}
+	else if (e.x2 == 0)
+	{
+		if (e.x1 < 0)
+			dprintf(1, "x (x - %f)\n", -e.x1);
+		else
+			dprintf(1, "x (x + %f)\n", e.x1);
+	}
+	else
+	{
+		if (e.x1 < 0)
+			dprintf(1, "(x - %f) ", -e.x1);
+		else
+			dprintf(1, "(x + %f) ", e.x1);
+		if (e.x2 < 0)
+			dprintf(1, "(x - %f)\n", -e.x2);
+		else
+			dprintf(1, "(x + %f)\n", e.x2);
+	}
+}
+
+void	ft_putcomplex(double real, double imag)
+{
+	if (real < 0)
+		dprintf(1, "- %f ", -real);
+	else if (real > 0)
+		dprintf(1, "+ %f ", real);
+	if (imag < 0)
+		dprintf(1, "- %f i ", -imag);
+	else if (imag > 0)
+		dprintf(1, "+ %f i ", imag);
+}
+
+void	ft_put_lowerfacto(t_env e)
+{
+	if (e.x1 == e.x2 && e.i1 == e.i2)
+	{
+		write (1, "(x ", 3);
+		ft_putcomplex(e.x1, e.i1);
+		write(1, ") ^ 2\n", 6);
+	}
+	else if (e.x1 == 0 && e.i1 == 0)
+	{
+		write (1, "x (x ", 5);
+		ft_putcomplex(e.x2, e.i2);
+		write(1, ") ^ 2\n", 6);
+	}
+	else if (e.x2 == 0 && e.i2 == 0)
+	{
+		write (1, "x (x ", 5);
+		ft_putcomplex(e.x1, e.i1);
+		write(1, ") ^ 2\n", 6);
+	}
+	else
+	{
+		write(1, "(x ", 3);
+		ft_putcomplex(e.x1, e.i1);
+		write(1, ") (x ", 5);
+		ft_putcomplex(e.x2, e.i2);
+		write(1, ")\n", 2);
+
+	}
+}
+
+void	ft_putfactorised(t_env e)
+{
+	write (1, "Factorised form : ", 18);
+	if (e.i == 0)
+		ft_put_upperfacto(e);
+	else
+		ft_put_lowerfacto(e);
+}
+
+void	ft_put_info(t_env e)
+{
+	e.d = e.b * e.b - 4 * e.a * e.c;
+	// dprintf(1, "\t\tDelta = %f\n", e.d);
+	if (e.d < 0)
+	{
+		e.d = -e.d;
+		e.i = 1;
+	}
+	else
+		e.i = 0;
+	ft_putcanonic(e);
+	ft_putquadra(e);
+	if (e.d == 0)
+	{
+		e.i = 0;
+		e.x1 = -e.b / (2 * e.a);
+		e.x2 = e.x1;
+		ft_putfactorised(e);
+	}
+	else if (e.i == 1)
+	{
+		e.i = 1;
+		e.sd = ft_sqrt(e.d);
+		e.x1 = -e.b / (2 * e.a);
+		e.x2 = e.x1;
+		e.i1 = e.sd / (2 * e.a);
+		e.i2 = -e.i1;
+		ft_putfactorised(e);
+	}
+	else if (e.i == 0)
+	{
+		e.i = 0;
+		e.sd = ft_sqrt(e.d);
+		e.x1 = (-e.b + e.sd) / (2 * e.a);
+		e.x2 = (-e.b - e.sd) / (2 * e.a);
+		ft_putfactorised(e);
+	}
+
+}
+
+int		ft_checkexpressions(t_env e)
+{
 	int		ret;
-	double	x1;
-	double	x2;
 
 	e.e1.elems = ft_getduo(e.e1.str);
 	e.e2.elems = ft_getduo(e.e2.str);
@@ -260,29 +436,16 @@ int		ft_checkexpressions(t_env e)
 	e.merged = ft_merge(e);
 	ft_cleanduos(&(e.merged));
 	ft_putmerged(e);
-	a = 0;
-	b = 0;
-	c = 0;
-	ret = ft_isseconddegree(&(e.merged), &a, &b, &c);
+	e.a = 0;
+	e.b = 0;
+	e.c = 0;
+	ret = ft_isseconddegree(&(e.merged), &e.a, &e.b, &e.c);
 	if (ret == 0)
 		write(1, "The given equation is not a polynom of the second degree.\n", 58);
-	else if (a == 0 && b == 0)
+	else if (e.a == 0 && e.b == 0)
 		write(1, "The given equation does not contain X and by so is impossible.\n", 63);
 	else
-	{
-		d = b * b - 4 * a * c;
-		sd = ft_sqrt(d);
-		dprintf(1, "Canonic form : %f (x + %f) ^ 2 + %f\n", a, -b / (2 * a), -(b * b - 4 * a * c) / (4 * a * a));
-		dprintf(1, "Quadratic equation : %f + %f X + %f X^2\n", a, b, c);
-		dprintf(1, "Delta = %f, sqrt(delta) = %f\n", d, sd);
-		if (d > 0)
-		{
-			x1 = (-b + sd) / (2 * a);
-			x2 = (-b - sd) / (2 * a);
-			dprintf(1, "Factorised form : (x - %f) (x - %f)\n", x1, x2);
-			dprintf(1, "X1 = %f, X2 = %f\n", x1, x2);
-		}
-	}
+		ft_put_info(e);
 	return (1);
 }
 
@@ -292,9 +455,9 @@ int		main(int ac, char **av)
 
 	if (!(ft_verifs(ac, *(av + 1))))
 		return (0);
-if (!(ft_getexpressions(&e, *(av + 1))))
-return (0);
-ft_checkexpressions(e);
+	if (!(ft_getexpressions(&e, *(av + 1))))
+		return (0);
+	ft_checkexpressions(e);
 // if (!(ft_checkexpressions(e)))
 // return (ft_invalidxpressions(e));
 	// if (!(ft_decompose(&e)))

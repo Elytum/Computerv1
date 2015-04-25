@@ -20,6 +20,16 @@ typedef struct		s_env
 	t_expr			e1;
 	t_expr			e2;
 	t_duo			*merged;
+	double			a;
+	double			b;
+	double			c;
+	double			d;
+	double			sd;
+	double			x1;
+	double			x2;
+	double			i1;
+	double			i2;
+	double			i;
 }					t_env;
 
 union				powunion
@@ -139,4 +149,5 @@ char		**ft_splitsigns(char *str);
 t_duo		*ft_getduo(char *str);
 
 double				ft_sqrt(const double fg);
+double       		ft_sqrt2(const double n);
 double				ft_pow(double a, double b);

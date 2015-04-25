@@ -28,6 +28,21 @@ double				ft_sqrt(const double fg)
 	return (n);
 }
 
+double       ft_sqrt2(const double n)
+{
+  /*We are using n itself as initial approximation
+   This can definitely be improved */
+  double x = n;
+  double y = 1;
+  double e = 0.000001; /* e decides the accuracy level*/
+  while(x - y > e)
+  {
+    x = (x + y)/2;
+    y = n/x;
+  }
+  return x;
+}
+
 // double				lol_pow(double a, double b)
 // {
 // 	// return (exp(p * log(b)));
