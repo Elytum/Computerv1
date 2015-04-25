@@ -172,7 +172,7 @@ t_duo	*ft_merge(t_env e)
 
 void	ft_putmerged(t_env e)
 {
-	write(1, "Merged format : ", 16);
+	write(1, "Reduced format : ", 17);
 	ft_putformat(e.merged);
 	write(1, " = 0\n", 5);
 }
@@ -350,27 +350,27 @@ void	ft_put_lowerfacto(t_env e)
 	if (e.x1 == e.x2 && e.i1 == e.i2)
 	{
 		write (1, "(x ", 3);
-		ft_putcomplex(e.x1, e.i1);
+		ft_putcomplex(-e.x1, -e.i1);
 		write(1, ") ^ 2\n", 6);
 	}
 	else if (e.x1 == 0 && e.i1 == 0)
 	{
 		write (1, "x (x ", 5);
-		ft_putcomplex(e.x2, e.i2);
+		ft_putcomplex(-e.x2, -e.i2);
 		write(1, ") ^ 2\n", 6);
 	}
 	else if (e.x2 == 0 && e.i2 == 0)
 	{
 		write (1, "x (x ", 5);
-		ft_putcomplex(e.x1, e.i1);
+		ft_putcomplex(-e.x1, -e.i1);
 		write(1, ") ^ 2\n", 6);
 	}
 	else
 	{
 		write(1, "(x ", 3);
-		ft_putcomplex(e.x1, e.i1);
+		ft_putcomplex(-e.x1, -e.i1);
 		write(1, ") (x ", 5);
-		ft_putcomplex(e.x2, e.i2);
+		ft_putcomplex(-e.x2, -e.i2);
 		write(1, ")\n", 2);
 
 	}
@@ -380,50 +380,78 @@ void	ft_putfactorised(t_env e)
 {
 	write (1, "Factorised form : ", 18);
 	if (e.i == 0)
+	{
 		ft_put_upperfacto(e);
+		if (e.x1 != e.x2)
+			dprintf(1, "Solutions are : X1 = %f, X2 = %f\n", e.x1, e.x2);
+		else
+			dprintf(1, "Solution is %f\n", e.x1);
+	}
 	else
+	{
 		ft_put_lowerfacto(e);
+		if (e.x1 != e.x2 || e.i1 != e.i2)
+		{
+			write(1, "Solutions are : X1 = ", 21);
+			ft_putcomplex(e.x1, e.i1);
+			write(1, "and X2 = ", 7);
+			ft_putcomplex(e.x2, e.i2);
+			write (1, "\n", 1);
+		}
+		else
+		{
+			write(1, "Solution is ", 12);
+			ft_putcomplex(e.x1, e.i1);
+			write(1, "\n", 1);
+		}
+	}
 }
 
 void	ft_put_info(t_env e)
 {
-	e.d = e.b * e.b - 4 * e.a * e.c;
-	// dprintf(1, "\t\tDelta = %f\n", e.d);
-	if (e.d < 0)
+	if (e.a && e.b)
 	{
-		e.d = -e.d;
-		e.i = 1;
+		e.d = e.b * e.b - 4 * e.a * e.c;
+		dprintf(1, "Delta = %f\n", e.d);
+		if (e.d < 0)
+		{
+			e.d = -e.d;
+			e.i = 1;
+		}
+		else
+			e.i = 0;
+		ft_putcanonic(e);
+		ft_putquadra(e);
+		if (e.d == 0)
+		{
+			e.i = 0;
+			e.x1 = -e.b / (2 * e.a);
+			e.x2 = e.x1;
+			ft_putfactorised(e);
+		}
+		else if (e.i == 1)
+		{
+			e.i = 1;
+			e.sd = ft_sqrt(e.d);
+			e.x1 = -e.b / (2 * e.a);
+			e.x2 = e.x1;
+			e.i1 = e.sd / (2 * e.a);
+			e.i2 = -e.i1;
+			ft_putfactorised(e);
+		}
+		else if (e.i == 0)
+		{
+			e.i = 0;
+			e.sd = ft_sqrt(e.d);
+			e.x1 = (-e.b + e.sd) / (2 * e.a);
+			e.x2 = (-e.b - e.sd) / (2 * e.a);
+			ft_putfactorised(e);
+		}
 	}
-	else
-		e.i = 0;
-	ft_putcanonic(e);
-	ft_putquadra(e);
-	if (e.d == 0)
-	{
-		e.i = 0;
-		e.x1 = -e.b / (2 * e.a);
-		e.x2 = e.x1;
-		ft_putfactorised(e);
-	}
-	else if (e.i == 1)
-	{
-		e.i = 1;
-		e.sd = ft_sqrt(e.d);
-		e.x1 = -e.b / (2 * e.a);
-		e.x2 = e.x1;
-		e.i1 = e.sd / (2 * e.a);
-		e.i2 = -e.i1;
-		ft_putfactorised(e);
-	}
-	else if (e.i == 0)
-	{
-		e.i = 0;
-		e.sd = ft_sqrt(e.d);
-		e.x1 = (-e.b + e.sd) / (2 * e.a);
-		e.x2 = (-e.b - e.sd) / (2 * e.a);
-		ft_putfactorised(e);
-	}
-
+	else if (e.c && e.b)
+		dprintf(1, "X = %f\n", -e.c / e.b);
+	else if (e.c && e.a)
+		dprintf(1, "X = %f\n", ft_sqrt2(-e.c / e.a));
 }
 
 int		ft_checkexpressions(t_env e)
@@ -435,6 +463,11 @@ int		ft_checkexpressions(t_env e)
 	ft_put_simplified(e);
 	e.merged = ft_merge(e);
 	ft_cleanduos(&(e.merged));
+	if (e.merged->power == 0 && e.merged->value == 0 && e.merged->next == NULL)
+	{
+		dprintf (1, "X can be any read in order to solve this equation.\n");
+		return (0);
+	}
 	ft_putmerged(e);
 	e.a = 0;
 	e.b = 0;
@@ -443,7 +476,7 @@ int		ft_checkexpressions(t_env e)
 	if (ret == 0)
 		write(1, "The given equation is not a polynom of the second degree.\n", 58);
 	else if (e.a == 0 && e.b == 0)
-		write(1, "The given equation does not contain X and by so is impossible.\n", 63);
+		write(1, "The given equation is impossible.\n", 34);
 	else
 		ft_put_info(e);
 	return (1);

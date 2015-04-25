@@ -112,8 +112,8 @@ int				ft_verifs(int ac, char *line)
 		error += 1 + ft_invalidcharacters(line);
 	if (!(ft_checkpowers(line)))
 		error += 1 + ft_invalidpower(line);
-	// if (!(ft_checkpowerssign(line)))
-	// 	error += 1 + ft_invalidpowerssign(line); POWER OF DOUBLES
+	if (!(ft_checkpowerssign(line)))
+		error += 1 + ft_invalidpowerssign(line);// POWER OF DOUBLES
 	if (!(ft_checkpowervalue(line)))
 		error += 1 + ft_invalidpowersvalue(line);
 	if (!(ft_checklast(line)))
