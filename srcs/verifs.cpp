@@ -81,8 +81,8 @@ int				ft_verifs2(char *line, char error, char warning)
 {
 	if (!(ft_checkdoublepoints(line)))
 		error += 1 + ft_invaliddoublepoints(line);
-	if (!(ft_next_operation(line, 0)))
-		error += 1;// + ft_invalidsplittedval(line);
+	// if (!(ft_next_operation(line, 0)))
+	// 	error += 1;// + ft_invalidsplittedval(line); BUG
 	if (!(ft_checkextremval(line)))
 		warning += 1 + ft_invalidextrem(line);
 	if (!(ft_checksplittedval(line)))
@@ -112,12 +112,13 @@ int				ft_verifs(int ac, char *line)
 		error += 1 + ft_invalidcharacters(line);
 	if (!(ft_checkpowers(line)))
 		error += 1 + ft_invalidpower(line);
-	if (!(ft_checkpowerssign(line)))
-		error += 1 + ft_invalidpowerssign(line);
+	// if (!(ft_checkpowerssign(line)))
+	// 	error += 1 + ft_invalidpowerssign(line); POWER OF DOUBLES
 	if (!(ft_checkpowervalue(line)))
 		error += 1 + ft_invalidpowersvalue(line);
 	if (!(ft_checklast(line)))
 		error += 1 + ft_invalidlast(line);
 	//CHECK DOUBLE SIGNS
+	//- X^2 ?
 	return (ft_verifs2(line, error, warning));
 }

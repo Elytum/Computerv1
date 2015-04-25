@@ -74,28 +74,19 @@ int		ft_checkpowerssign(char *str)
 
 int		ft_invalidcharacters(char *str)
 {
-	char *ptr;
+	char *p;
 
 	write(1, WRONG_CHARACTERS, WRONG_CHARACTERS_LEN);
-	write(1, (ptr = str), strlen(str));
+	write(1, (p = str), strlen(str));
 	write(1, BN_ENTER_RED, BN_ENTER_RED_LEN);
-	while (*ptr)
+	while (*p)
 	{
-		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '.' &&
-			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '/' && *ptr != '=' && *ptr != '^')
-		{
-			if (*ptr == 'X' && *(ptr + 1) == '^' && ptr++)
-				write (1, "  ", 2);
-			else if (*ptr != 'X' || !(*(ptr + 1) == ' ' || *(ptr + 1) == '\n' ||
-				*(ptr + 1) == '\t' || !*(ptr + 1)))
-				write(1, "~", 1);
-			else
-				write(1, " ", 1);
-		}
+		if (*p != ' ' && *p != '\n' && *p != '\t' && *p != 'X' && *p != '*' && *p != '/' && *p != '+' &&
+			*p != '-' && *p != '^' && *p != '.' && *p != '=' && !(*p >= '0' && *p <= '9'))
+			write(1, "~", 1);
 		else
-			write (1, " ", 1);
-		ptr++;
+			write(1, " ", 1);
+		p++;
 	}
 	write(1, OUT_BNBN, OUT_BNBN_LEN);
 	return (0);
@@ -103,24 +94,15 @@ int		ft_invalidcharacters(char *str)
 
 int		ft_checkcharacters(char *str)
 {
-	char *ptr;
+	char *p;
 
-	ptr = str;
-	while (*ptr)
+	p = str;
+	while (*p)
 	{
-		if (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && *ptr != '.' &&
-			!(*ptr >= '0' && *ptr <= '9') && *ptr != '+' &&
-			*ptr != '-' && *ptr != '*' && *ptr != '/' && *ptr != '=' && *ptr != '^')
-		{
-			if (*ptr == 'X' && *(ptr + 1) == '^')
-				ptr++;
-			else if (*ptr != 'X' || (*ptr == 'X' && *(ptr + 1) &&
-				*(ptr + 1) != '+' && *(ptr + 1) != '-' &&
-				*(ptr + 1) != ' ' && *(ptr + 1) != '\n' &&
-				*(ptr + 1) != '\t' && (*(ptr + 1) != '~')))
-				return (0);
-		}
-		ptr++;
+		if (*p != ' ' && *p != '\n' && *p != '\t' && *p != 'X' && *p != '*' && *p != '/' && *p != '+' &&
+			*p != '-' && *p != '^' && *p != '.' && *p != '=' && !(*p >= '0' && *p <= '9'))
+			return (0);
+		p++;
 	}
 	return (1);
 }

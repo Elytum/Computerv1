@@ -237,7 +237,7 @@ t_duo		*ft_getduo(char *str)
 	char	*ptr;
 	t_duo	*lst;
 
-	t_duo	*tmp;
+	// t_duo	*tmp;
 
 	lst = NULL;
 	while (*str)
@@ -247,8 +247,8 @@ t_duo		*ft_getduo(char *str)
 			ptr++;
 		c = *ptr;
 		*ptr = '\0';
-		tmp = ft_inside(str);
-		dprintf(1, "'%s' : %f and %f\n", str, tmp->value, tmp->power);
+		// tmp = ft_inside(str);
+		// dprintf(1, "'%s' : %f and %f\n", str, tmp->value, tmp->power);
 		ft_lstinsert(&lst, ft_inside(str));
 		*ptr = c;
 		str = ptr;

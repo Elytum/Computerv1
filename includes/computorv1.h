@@ -19,6 +19,7 @@ typedef struct		s_env
 	char			*minimized;
 	t_expr			e1;
 	t_expr			e2;
+	t_duo			*merged;
 }					t_env;
 
 union				powunion
