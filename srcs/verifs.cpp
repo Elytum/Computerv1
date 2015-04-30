@@ -81,8 +81,8 @@ int				ft_verifs2(char *line, char error, char warning)
 {
 	if (!(ft_checkdoublepoints(line)))
 		error += 1 + ft_invaliddoublepoints(line);
-	// if (!(ft_next_operation(line, 0)))
-	// 	error += 1;// + ft_invalidsplittedval(line); BUG
+	if (!(ft_next_operation(line, 0)))
+		error += 1;// + ft_invalidsplittedval(line); BUG
 	if (!(ft_checkextremval(line)))
 		warning += 1 + ft_invalidextrem(line);
 	if (!(ft_checksplittedval(line)))

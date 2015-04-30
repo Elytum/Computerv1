@@ -463,9 +463,9 @@ int		ft_checkexpressions(t_env e)
 	ft_put_simplified(e);
 	e.merged = ft_merge(e);
 	ft_cleanduos(&(e.merged));
-	if (e.merged->power == 0 && e.merged->value == 0 && e.merged->next == NULL)
+	if (!e.merged || (e.merged->power == 0 && e.merged->value == 0 && e.merged->next == NULL))
 	{
-		dprintf (1, "X can be any read in order to solve this equation.\n");
+		dprintf (1, "X can be any real in order to solve this equation.\n");
 		return (0);
 	}
 	ft_putmerged(e);

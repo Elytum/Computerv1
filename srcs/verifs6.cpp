@@ -45,6 +45,13 @@ int			ft_next_operation(char *str, int flag)
 			while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 				ptr++;
 		}
+		else if (*ptr == 'X')
+		{
+			if (flag == 2)
+				return (ft_invalid_operation(str));
+			flag = 2;
+			ptr++;
+		}
 		else
 			ptr++;
 	}
