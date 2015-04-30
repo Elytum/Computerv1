@@ -48,10 +48,14 @@ typedef struct		s_values
 #define MAX_INT 2147483647
 #define MIN_INT 2147483648
 
-#define OUT_COLOR "\e[0m"
+#define OUT_COLOR    "\e[0m"
+#define WHITE_COLOR  "\e[1;29m"
+#define BLACK_COLOR  "\033[30m"
+#define RED_COLOR    "\e[1;31m"
+#define GREEN_COLOR  "\033[32m"
+#define BLUE_COLOR   "\033[34m"
 #define PURPLE_COLOR "\e[1;35m"
-#define RED_COLOR "\e[1;31m"
-#define WHITE_COLOR "\e[1;29m"
+#define CYAN_COLOR   "\033[36m"
 
 #define WRONG_ARGS_NB RED_COLOR"error: "OUT_COLOR""WHITE_COLOR"wrong number of arguments\n"OUT_COLOR
 #define WRONG_ARGS_NB_LEN 55

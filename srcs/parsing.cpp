@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/computorv1.h"
-#include <math.h>
 
 size_t		ft_nbofc(char *str, char c)
 {
@@ -152,7 +151,6 @@ double			ft_getvalue(char *str)
 	char		sign;
 	double		v;
 
-	// dprintf(1, "Launching with '%s'\n", str);
 	values = NULL;
 	if (*str == '^')
 		sign = '+';
@@ -160,8 +158,6 @@ double			ft_getvalue(char *str)
 		sign = *str;
 	ptr = str + 1;
 	ft_valuespushback(&values, sign, strtod(ptr, NULL));
-	// if (*ptr == '+' || *ptr == '-')
-		// ptr++;
 	while ((*ptr >= '0' && *ptr <= '9') || *ptr == '.')
 		ptr++;
 	while (*ptr && *ptr != 'X' && *(ptr + 1) && *(ptr + 1) != 'X')
@@ -170,9 +166,7 @@ double			ft_getvalue(char *str)
 		while (++ptr && ((*ptr >= '0' && *ptr <= '9') || *ptr == '.'))
 			;
 	}
-	// ft_putvalues(values);
 	v = ft_solvevalues(&values);
-	// dprintf(1, "Returning %f\n", v);
 	return (v);
 }
 
@@ -187,21 +181,18 @@ t_duo		*ft_inside(char *str)
 	duo->value = 0;
 	if (*(str + 1) >= '0' && *(str + 1) <= '9')
 		duo->value = ft_getvalue(str);
+	else if (*str == '-')
+		duo->value = -1;
 	else
 		duo->value = 1;
 	ptr = strchr(str, 'X');
 	if (!ptr)
 		duo->power = 0;
-	else if (*(ptr + 1) != '^')
-		if (ptr != str && *(ptr - 1) == '-')
-			duo->power = -1;
-		else
-			duo->power = 1;
+	else if (*(ptr + 1) != '^') {
+		duo->power = 1;
+	}
 	else
 		duo->power = ft_getvalue(ptr + 1);
-	// if (ptr && ptr != str && *(ptr - 1) != '*')
-	// 	v = 1;
-	// dprintf(1, "With %s : Value = %f, Power = %f, ptr = %s\n", str, duo->value, duo->power, ptr);
 	return (duo);
 }
 
@@ -237,8 +228,6 @@ t_duo		*ft_getduo(char *str)
 	char	*ptr;
 	t_duo	*lst;
 
-	// t_duo	*tmp;
-
 	lst = NULL;
 	while (*str)
 	{
@@ -247,8 +236,6 @@ t_duo		*ft_getduo(char *str)
 			ptr++;
 		c = *ptr;
 		*ptr = '\0';
-		// tmp = ft_inside(str);
-		// dprintf(1, "'%s' : %f and %f\n", str, tmp->value, tmp->power);
 		ft_lstinsert(&lst, ft_inside(str));
 		*ptr = c;
 		str = ptr;
@@ -259,16 +246,12 @@ t_duo		*ft_getduo(char *str)
 int			ft_split(t_env *e)
 {
 	char	**total;
-	// char	**test;
 
 	total = ft_strsplit(e->minimized, '=');
 	if (!(total[0] && total[1] && !total[2]))
 		return (0);
 	e->e1.str = total[0];
 	e->e2.str = total[1];
-	// ft_getduo(e->e1.str);
-	// test = ft_splitsigns(e->e1.str);
-	// ft_putstrarray(test);
 	return (1);
 }
 

@@ -90,14 +90,14 @@ void		ft_putformat(t_duo *lst)
 
 void	ft_put_simplified(t_env e)
 {
-	write(1, "Simplified : ", 13);
+	dprintf (1, "%sSimplified : %s", WHITE_COLOR, OUT_COLOR);
 	ft_putformat(e.e1.elems);
 	write(1, " = ", 3);
 	ft_putformat(e.e2.elems);
 	write(1, "\n", 1);
 }
 
-void	ft_lstpushmerge(t_duo **head, float value, float power)
+void	ft_lstpushmerge(t_duo **head, double value, double power)
 {
 	t_duo *ptr;
 	t_duo *past;
@@ -172,7 +172,7 @@ t_duo	*ft_merge(t_env e)
 
 void	ft_putmerged(t_env e)
 {
-	write(1, "Reduced format : ", 17);
+	dprintf(1, "%sReduced format :%s ", WHITE_COLOR, OUT_COLOR);
 	ft_putformat(e.merged);
 	write(1, " = 0\n", 5);
 }
@@ -252,7 +252,7 @@ void		ft_putcanonic(t_env e)
 	a = e.a;
 	b = -e.b / (2 * e.a);
 	c = -(e.b * e.b - 4 * e.a * e.c) / (4 * e.a * e.a);
-	write(1, "Canonic form : ", 15);
+	dprintf (1, "%sCanonic form :%s ", WHITE_COLOR, OUT_COLOR);
 	if (a != 0)
 	{
 		if (a < 0)
@@ -262,12 +262,12 @@ void		ft_putcanonic(t_env e)
 		if (b != 0)
 		{
 			if (b < 0)
-				dprintf(1, "(x - %f) ^ 2 ", -b);
+				dprintf(1, "(X - %f) ^ 2 ", -b);
 			else
-				dprintf(1, "(x + %f) ^ 2 ", b);
+				dprintf(1, "(X + %f) ^ 2 ", b);
 		}
 		else
-			write(1, "x ^ 2", 5);
+			write(1, "X ^ 2", 5);
 	}
 	if (c < 0)
 		dprintf(1, "- %f\n", -c);
@@ -279,7 +279,7 @@ void		ft_putcanonic(t_env e)
 
 void	ft_putquadra(t_env e)
 {
-	write (1, "Quadratic equation : ", 21);
+	dprintf (1, "%sQuadratic equation :%s ", WHITE_COLOR, OUT_COLOR);
 	if (e.a < 0)
 		dprintf(1, "- %f X ^ 2 ", -e.a);
 	else if (e.a > 0)
@@ -300,36 +300,36 @@ void	ft_put_upperfacto(t_env e)
 	if (e.x1 == e.x2)
 	{
 		if (e.x1 < 0)
-			dprintf(1, "(x - %f) ^ 2\n", -e.x1);
+			dprintf(1, "(X - %f) ^ 2\n", -e.x1);
 		else if (e.x1 > 0)
-			dprintf(1, "(x + %f) ^ 2\n", e.x1);
+			dprintf(1, "(X + %f) ^ 2\n", e.x1);
 		else
-			dprintf(1, "x ^ 2\n");
+			dprintf(1, "X ^ 2\n");
 	}
 	else if (e.x1 == 0)
 	{
 		if (e.x2 < 0)
-			dprintf(1, "x (x - %f)\n", -e.x2);
+			dprintf(1, "X (X - %f)\n", -e.x2);
 		else
-			dprintf(1, "x (x + %f)\n", e.x2);
+			dprintf(1, "X (X + %f)\n", e.x2);
 	}
 	else if (e.x2 == 0)
 	{
 		if (e.x1 < 0)
-			dprintf(1, "x (x - %f)\n", -e.x1);
+			dprintf(1, "X (X - %f)\n", -e.x1);
 		else
-			dprintf(1, "x (x + %f)\n", e.x1);
+			dprintf(1, "X (X + %f)\n", e.x1);
 	}
 	else
 	{
 		if (e.x1 < 0)
-			dprintf(1, "(x - %f) ", -e.x1);
+			dprintf(1, "(X - %f) ", -e.x1);
 		else
-			dprintf(1, "(x + %f) ", e.x1);
+			dprintf(1, "(X + %f) ", e.x1);
 		if (e.x2 < 0)
-			dprintf(1, "(x - %f)\n", -e.x2);
+			dprintf(1, "(X - %f)\n", -e.x2);
 		else
-			dprintf(1, "(x + %f)\n", e.x2);
+			dprintf(1, "(X + %f)\n", e.x2);
 	}
 }
 
@@ -349,27 +349,27 @@ void	ft_put_lowerfacto(t_env e)
 {
 	if (e.x1 == e.x2 && e.i1 == e.i2)
 	{
-		write (1, "(x ", 3);
+		write (1, "(X ", 3);
 		ft_putcomplex(-e.x1, -e.i1);
 		write(1, ") ^ 2\n", 6);
 	}
 	else if (e.x1 == 0 && e.i1 == 0)
 	{
-		write (1, "x (x ", 5);
+		write (1, "X (X ", 5);
 		ft_putcomplex(-e.x2, -e.i2);
 		write(1, ") ^ 2\n", 6);
 	}
 	else if (e.x2 == 0 && e.i2 == 0)
 	{
-		write (1, "x (x ", 5);
+		write (1, "X (X ", 5);
 		ft_putcomplex(-e.x1, -e.i1);
 		write(1, ") ^ 2\n", 6);
 	}
 	else
 	{
-		write(1, "(x ", 3);
+		write(1, "(X ", 3);
 		ft_putcomplex(-e.x1, -e.i1);
-		write(1, ") (x ", 5);
+		write(1, ") (X ", 5);
 		ft_putcomplex(-e.x2, -e.i2);
 		write(1, ")\n", 2);
 
@@ -378,30 +378,35 @@ void	ft_put_lowerfacto(t_env e)
 
 void	ft_putfactorised(t_env e)
 {
-	write (1, "Factorised form : ", 18);
+	dprintf (1, "%sFactorised form :%s ", WHITE_COLOR, OUT_COLOR);
 	if (e.i == 0)
 	{
 		ft_put_upperfacto(e);
 		if (e.x1 != e.x2)
-			dprintf(1, "Solutions are : X1 = %f, X2 = %f\n", e.x1, e.x2);
+			dprintf(1, "%sSolutions are :%s X1 = %s%f%s, X2 = %s%f%s\n",
+				WHITE_COLOR, OUT_COLOR,
+				GREEN_COLOR, e.x1, OUT_COLOR,
+				GREEN_COLOR, e.x2, OUT_COLOR);
 		else
-			dprintf(1, "Solution is %f\n", e.x1);
+			dprintf(1, "%sSolution is%s %s%f%s\n", WHITE_COLOR, OUT_COLOR, GREEN_COLOR, e.x1, OUT_COLOR);
 	}
 	else
 	{
 		ft_put_lowerfacto(e);
 		if (e.x1 != e.x2 || e.i1 != e.i2)
 		{
-			write(1, "Solutions are : X1 = ", 21);
+			dprintf(1, "%sSolutions are :%s X1 = %s", WHITE_COLOR, OUT_COLOR, GREEN_COLOR);
 			ft_putcomplex(e.x1, e.i1);
-			write(1, "and X2 = ", 7);
+			dprintf(1, "%sand X2 = %s", OUT_COLOR, GREEN_COLOR);
 			ft_putcomplex(e.x2, e.i2);
-			write (1, "\n", 1);
+			dprintf (1, "%s\n", OUT_COLOR);
 		}
 		else
 		{
-			write(1, "Solution is ", 12);
+			dprintf(1, "%sSolution is%s ", WHITE_COLOR, OUT_COLOR);
+			dprintf(1, GREEN_COLOR);
 			ft_putcomplex(e.x1, e.i1);
+			dprintf(1, OUT_COLOR);
 			write(1, "\n", 1);
 		}
 	}
@@ -412,7 +417,7 @@ void	ft_put_info(t_env e)
 	if (e.a && e.b)
 	{
 		e.d = e.b * e.b - 4 * e.a * e.c;
-		dprintf(1, "Delta = %f\n", e.d);
+		dprintf(1, "%sDelta :%s %s%f%s\n", WHITE_COLOR, OUT_COLOR, CYAN_COLOR, e.d, OUT_COLOR);
 		if (e.d < 0)
 		{
 			e.d = -e.d;
@@ -449,9 +454,13 @@ void	ft_put_info(t_env e)
 		}
 	}
 	else if (e.c && e.b)
-		dprintf(1, "X = %f\n", -e.c / e.b);
+		dprintf(1, "X =%s %f%s\n", GREEN_COLOR, -e.c / e.b, OUT_COLOR);
 	else if (e.c && e.a)
-		dprintf(1, "X = %f\n", ft_sqrt2(-e.c / e.a));
+		dprintf(1, "X =%s %f%s\n", GREEN_COLOR, ft_sqrt2(-e.c / e.a), OUT_COLOR);
+	else if (e.a)
+		dprintf (1, "X =%s 0%s\n", GREEN_COLOR, OUT_COLOR);
+	else if (e.b)
+		dprintf (1, "X =%s 0%s\n", GREEN_COLOR, OUT_COLOR);
 }
 
 int		ft_checkexpressions(t_env e)
@@ -465,7 +474,7 @@ int		ft_checkexpressions(t_env e)
 	ft_cleanduos(&(e.merged));
 	if (!e.merged || (e.merged->power == 0 && e.merged->value == 0 && e.merged->next == NULL))
 	{
-		dprintf (1, "X can be any real in order to solve this equation.\n");
+		dprintf (1, "%sX can be any real in order to solve this equation.%s\n", GREEN_COLOR, OUT_COLOR);
 		return (0);
 	}
 	ft_putmerged(e);
@@ -474,9 +483,9 @@ int		ft_checkexpressions(t_env e)
 	e.c = 0;
 	ret = ft_isseconddegree(&(e.merged), &e.a, &e.b, &e.c);
 	if (ret == 0)
-		write(1, "The given equation is not a polynom of the second degree.\n", 58);
+		dprintf(1, "%sThe given equation is not a polynom of the second degree.%s\n", RED_COLOR, OUT_COLOR);
 	else if (e.a == 0 && e.b == 0)
-		write(1, "The given equation is impossible.\n", 34);
+		dprintf(1, "%sThe given equation is impossible.%s\n", RED_COLOR, OUT_COLOR);
 	else
 		ft_put_info(e);
 	return (1);
@@ -491,10 +500,4 @@ int		main(int ac, char **av)
 	if (!(ft_getexpressions(&e, *(av + 1))))
 		return (0);
 	ft_checkexpressions(e);
-// if (!(ft_checkexpressions(e)))
-// return (ft_invalidxpressions(e));
-	// if (!(ft_decompose(&e)))
-		// return (0);	return (0);
-	(void)av;
-	(void)e;
 }
