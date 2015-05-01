@@ -179,7 +179,7 @@ t_duo		*ft_inside(char *str)
 		return (NULL);
 	duo->next = NULL;
 	duo->value = 0;
-	if (*(str + 1) >= '0' && *(str + 1) <= '9')
+	if ((*(str + 1) >= '0' && *(str + 1) <= '9') || *(str + 1) == '.')
 		duo->value = ft_getvalue(str);
 	else if (*str == '-')
 		duo->value = -1;
